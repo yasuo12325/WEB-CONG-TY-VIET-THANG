@@ -22,6 +22,17 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --no-dev --optimize-autoloader --prefer-dist --no-interaction
 
+      - name: Create throwaway build-time .env
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Publish Filament panel assets
+        run: php artisan filament:assets
+
+      - name: Remove throwaway .env
+        run: rm -f .env
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
