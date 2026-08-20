@@ -1,0 +1,37 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+
+    --color-navy-950: #050b1a;
+    --color-navy-900: #0a1530;
+    --color-navy-800: #0f1e42;
+    --color-navy-700: #16295a;
+    --color-navy-600: #1e3a75;
+
+    --color-gold-500: #d4a537;
+    --color-gold-400: #e3bb56;
+    --color-gold-300: #f0d183;
+}
+
+[x-cloak] {
+    display: none !important;
+}
+
+@layer components {
+    .btn-gold {
+        @apply inline-flex items-center gap-2 rounded-sm bg-gold-500 px-6 py-3 font-semibold text-navy-950 transition hover:bg-gold-400;
+    }
+
+    .btn-outline {
+        @apply inline-flex items-center gap-2 rounded-sm border border-white/40 px-6 py-3 font-semibold text-white transition hover:border-white hover:bg-white/10;
+    }
+
+    .section-title {
+        @apply text-2xl font-bold tracking-wide text-navy-900 md:text-3xl;
+    }
+}
