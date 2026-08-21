@@ -239,6 +239,37 @@ html {
         animation: hero-layer-in .8s cubic-bezier(.16, .84, .44, 1) both;
     }
 
+    /* Bottom-anchored "landing bloom" — a second, lower glow so the
+       composition has a light source blooming up from underneath the mark
+       (echoing the reference's radar-bloom base), not just a single centred
+       glow. Static (no animation) — it's already faint and diffuse enough
+       that motion here would add cost without adding anything visible. */
+    .hero-visual__bloom {
+        position: absolute;
+        inset: 6% -4% -18% -4%;
+        border-radius: 9999px;
+        background: radial-gradient(ellipse 70% 55% at 50% 100%, rgba(96, 189, 255, .24), transparent 68%);
+        filter: blur(20px);
+        animation: hero-layer-in .9s cubic-bezier(.16, .84, .44, 1) .1s both;
+    }
+
+    /* Faint technology-network dot grid, masked to a soft circle so it never
+       reads as a rectangular tile — a nod to the "world map" reference
+       without fabricating an actual map. Static; no JS involved. */
+    .hero-visual__map {
+        position: absolute;
+        inset: -14%;
+        border-radius: 9999px;
+        background-image: radial-gradient(circle, rgba(160, 202, 255, .55) 1px, transparent 1.6px);
+        background-size: 24px 24px;
+        opacity: .3;
+        mask-image: radial-gradient(circle, black 50%, transparent 76%);
+        -webkit-mask-image: radial-gradient(circle, black 50%, transparent 76%);
+        transform: translate3d(calc(var(--hero-px) * .5), calc(var(--hero-py) * .5), 0);
+        transition: transform .2s ease-out;
+        animation: hero-layer-in .9s cubic-bezier(.16, .84, .44, 1) .1s both;
+    }
+
     /* A tighter, brighter halo directly behind the logo — this is what
        reads as "light source behind glass", separate from the big ambient
        glow above so the logo has an immediate rim of light around its
@@ -294,6 +325,31 @@ html {
         transform-origin: 200px 200px;
     }
 
+    /* Large open "flight path" arcs (world-map reference): one gold, one
+       blue, drawn as a circle with a long dash + a gap rather than a full
+       ring, each rotating with its own dot riding the visible end. */
+    .hero-ring--arc-gold {
+        animation: hero-spin-cw 58s linear infinite, hero-layer-in .8s cubic-bezier(.16, .84, .44, 1) .1s both;
+    }
+    .hero-ring--arc-gold circle {
+        stroke: var(--color-gold-400);
+        stroke-width: 1.75;
+        stroke-linecap: round;
+        stroke-dasharray: 820 320;
+        opacity: .55;
+    }
+
+    .hero-ring--arc-blue {
+        animation: hero-spin-ccw 82s linear infinite, hero-layer-in .8s cubic-bezier(.16, .84, .44, 1) .2s both;
+    }
+    .hero-ring--arc-blue circle {
+        stroke: rgba(96, 189, 255, .9);
+        stroke-width: 1.75;
+        stroke-linecap: round;
+        stroke-dasharray: 620 300;
+        opacity: .5;
+    }
+
     .hero-ring--outer {
         animation: hero-spin-cw 90s linear infinite, hero-layer-in .8s cubic-bezier(.16, .84, .44, 1) .15s both;
     }
@@ -329,6 +385,12 @@ html {
     .hero-orbit--1 { animation: hero-spin-cw 14s linear infinite, hero-layer-in .6s ease-out .75s both; }
     .hero-orbit--2 { animation: hero-spin-ccw 20s linear infinite, hero-layer-in .6s ease-out .85s both; }
     .hero-orbit--3 { animation: hero-spin-cw 26s linear infinite, hero-layer-in .6s ease-out .95s both; }
+
+    /* Matches its parent arc's duration/direction exactly, so the dot rides
+       at a fixed point on the arc as it rotates — a "current position"
+       marker travelling the flight path, rather than lapping it. */
+    .hero-orbit--arc-gold-dot { animation: hero-spin-cw 58s linear infinite, hero-layer-in .6s ease-out .3s both; }
+    .hero-orbit--arc-blue-dot { animation: hero-spin-ccw 82s linear infinite, hero-layer-in .6s ease-out .4s both; }
 
     .hero-dot {
         fill: rgba(148, 197, 255, .9);
@@ -381,13 +443,17 @@ html {
         }
     }
 
-    /* Tablet tier (md-lg): keep the logo, glow and the two primary rings;
-       drop the particle canvas, radar scan and outer orbit for a lighter,
-       still-premium composition instead of the full desktop system. */
+    /* Tablet tier (md-lg): keep the logo, glow/bloom, the map dot-grid, the
+       two primary rings and a single gold flight-path arc; drop the
+       particle canvas, radar scan, the second (blue) arc and the extra
+       orbit for a lighter, still-premium composition instead of the full
+       desktop system. */
     @media (max-width: 1023px) {
         .hero-visual__particles,
         .hero-visual__scan,
         .hero-ring--segmented,
+        .hero-ring--arc-blue,
+        .hero-orbit--arc-blue-dot,
         .hero-orbit--3 {
             display: none;
         }
@@ -428,15 +494,21 @@ html {
     .hero-visual__particles,
     .hero-visual__scan,
     .hero-visual__glow,
+    .hero-visual__bloom,
+    .hero-visual__map,
     .hero-visual__core-light,
     .hero-visual__logo,
     .hero-ring--outer,
     .hero-ring--dashed,
     .hero-ring--segmented,
     .hero-ring--inner,
+    .hero-ring--arc-gold,
+    .hero-ring--arc-blue,
     .hero-orbit--1,
     .hero-orbit--2,
     .hero-orbit--3,
+    .hero-orbit--arc-gold-dot,
+    .hero-orbit--arc-blue-dot,
     .hero-dot,
     .hero-visual__logo-img {
         animation: none !important;
