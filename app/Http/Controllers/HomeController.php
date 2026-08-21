@@ -24,6 +24,18 @@ class HomeController extends Controller
             ->orderBy('sort_order')
             ->get();
 
+        // "Lĩnh vực hoạt động" panels use a real product photo as their
+        // background image (never stock/fabricated art) — same lookup as
+        // the products ecosystem landing page.
+        foreach ($categories as $category) {
+            $category->coverProduct = Product::published()
+                ->where('category_id', $category->id)
+                ->with(['images' => fn ($q) => $q->where('is_primary', true)])
+                ->orderByDesc('is_featured')
+                ->orderBy('sort_order')
+                ->first();
+        }
+
         $featuredProducts = Product::query()
             ->published()
             ->where('is_featured', true)

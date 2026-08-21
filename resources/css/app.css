@@ -260,6 +260,126 @@ html {
         @apply flex h-full w-full items-center justify-center bg-[radial-gradient(circle_at_30%_20%,rgba(212,165,55,.25),transparent_55%),linear-gradient(135deg,var(--color-navy-800),var(--color-navy-950))];
     }
 
+    /* ---- Homepage "Lĩnh vực hoạt động": horizontal image panels ----------
+       Catalogue-showcase layout modeled on a 7-vertical-panel reference
+       layout (structure/hierarchy only — no assets/branding copied).
+       Desktop: 7 full-bleed panels sit edge to edge behind a hairline
+       divider; hovering one grows it via a flex-grow transition, so the
+       width change comes purely from flex math and never reflows the row.
+       Tablet: fixed-width snap-scroll row. Mobile: vertical stack. Each
+       panel's background is a real product photo (never stock art),
+       matching the category ecosystem card treatment above. */
+    .activity-panels {
+        @apply flex flex-col sm:flex-row sm:overflow-x-auto lg:overflow-visible;
+        scroll-snap-type: x proximity;
+    }
+
+    .activity-panel {
+        @apply relative block h-[320px] w-full shrink-0 overflow-hidden bg-navy-950 sm:h-[440px] sm:w-[240px] lg:h-[580px] lg:w-auto xl:h-[640px];
+        scroll-snap-align: start;
+        transition: flex-grow .6s cubic-bezier(.16,.84,.44,1);
+    }
+
+    .activity-panel + .activity-panel {
+        @apply border-l border-white/10;
+    }
+
+    @media (min-width: 1024px) {
+        .activity-panel {
+            flex: 1 1 0%;
+        }
+
+        .activity-panel:hover {
+            flex-grow: 3.2;
+        }
+    }
+
+    .activity-panel-media {
+        @apply absolute inset-0;
+        z-index: 0;
+    }
+
+    .activity-panel-media img {
+        @apply h-full w-full object-cover transition-transform duration-700 ease-out;
+    }
+
+    .activity-panel:hover .activity-panel-media img {
+        transform: scale(1.07);
+    }
+
+    /* Top of the image reads clearly; the bottom is nearly opaque navy so
+       white text always has strong contrast, regardless of the photo.
+       Explicit z-index (below) keeps this tint strictly BEHIND the text —
+       without it the pseudo-element paints last in DOM order and its
+       translucent navy washes out the letters/title/arrow sitting on top. */
+    .activity-panel::after {
+        content: '';
+        @apply pointer-events-none absolute inset-0 transition-opacity duration-500;
+        z-index: 1;
+        background: linear-gradient(to bottom,
+            rgba(0, 0, 56, .05) 0%,
+            rgba(0, 0, 56, .18) 40%,
+            rgba(0, 0, 56, .84) 76%,
+            rgba(0, 0, 56, .97) 100%);
+    }
+
+    .activity-panel:hover::after {
+        opacity: .9;
+    }
+
+    .activity-panel-content {
+        @apply pointer-events-none absolute inset-x-0 bottom-0 flex flex-col items-start p-4 lg:p-6;
+        z-index: 2;
+    }
+
+    .activity-panel-code {
+        @apply select-none text-xl font-black leading-none text-gold-400 transition-colors duration-500 lg:text-2xl;
+        text-shadow: 0 1px 3px rgba(0, 0, 20, .55);
+    }
+
+    .activity-panel:hover .activity-panel-code {
+        @apply text-gold-300;
+    }
+
+    .activity-panel-line {
+        @apply my-3 block h-0.5 w-8 bg-gold-500 transition-all duration-500 ease-out;
+    }
+
+    .activity-panel:hover .activity-panel-line {
+        @apply w-14 bg-gold-400;
+    }
+
+    .activity-panel-name {
+        @apply text-sm font-extrabold uppercase leading-[1.3] tracking-wide text-white transition-all duration-500 ease-out lg:text-base;
+        text-shadow: 0 1px 2px rgba(0, 0, 20, .7), 0 1px 6px rgba(0, 0, 20, .4);
+    }
+
+    .activity-panel:hover .activity-panel-name {
+        transform: translateY(-2px);
+        @apply lg:text-lg;
+    }
+
+    .activity-panel-arrow {
+        @apply pointer-events-none mt-4 flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full border border-gold-400/70 bg-navy-950/30 text-gold-400 transition-all duration-500 ease-out;
+    }
+
+    .activity-panel:hover .activity-panel-arrow {
+        @apply border-gold-300 text-gold-300;
+        box-shadow: 0 0 0 4px rgba(212, 165, 55, .12);
+    }
+
+    .activity-panel-arrow svg {
+        transition: transform .5s cubic-bezier(.16, .84, .44, 1);
+    }
+
+    .activity-panel:hover .activity-panel-arrow svg {
+        transform: translateX(3px);
+    }
+
+    .activity-panel-placeholder {
+        @apply flex h-full w-full items-center justify-center bg-[radial-gradient(circle_at_30%_20%,rgba(212,165,55,.2),transparent_55%),linear-gradient(135deg,var(--color-navy-800),var(--color-navy-950))];
+    }
+
     /* ---- Number counter placeholder before JS runs ----------------------- */
     [data-counter] {
         font-variant-numeric: tabular-nums;

@@ -74,31 +74,18 @@
         </div>
     </section>
 
-    {{-- Fields of activity --}}
-    <section class="mx-auto max-w-7xl px-4 py-16 lg:px-8 lg:py-24">
-        <div class="reveal mx-auto max-w-2xl text-center">
+    {{-- Fields of activity: horizontal image panels (A–G), HTI-style catalogue
+         showcase — see resources/views/components/activity-panel.blade.php --}}
+    <section class="py-16 lg:py-24">
+        <div class="reveal mx-auto max-w-2xl px-4 text-center">
             <div class="section-kicker">{{ __('home.fields_kicker') }}</div>
             <h2 class="section-title mt-2">{{ __('home.fields_title') }}</h2>
             <div class="mx-auto mt-3 h-1 w-16 bg-gold-500"></div>
         </div>
 
-        <div class="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4" data-reveal-stagger="70">
+        <div class="activity-panels mt-12" data-reveal-stagger="60">
             @foreach($categories as $category)
-                <a href="{{ lr('products.index', ['category' => $category->slug]) }}"
-                   class="reveal group relative flex flex-col gap-4 overflow-hidden rounded-md border border-navy-100 px-5 py-7 transition-all duration-300 hover:-translate-y-1 hover:border-gold-300 hover:shadow-xl hover:shadow-navy-900/10">
-                    <div class="flex items-center justify-between">
-                        <span class="flex h-12 w-12 items-center justify-center rounded-full bg-navy-900 text-white transition-colors duration-300 group-hover:bg-gold-500 group-hover:text-navy-950">
-                            @if($category->icon)
-                                <x-dynamic-component :component="'heroicon-o-'.$category->icon" class="h-6 w-6" />
-                            @endif
-                        </span>
-                        <span class="group-badge">{{ $category->group_code }}</span>
-                    </div>
-                    <span class="text-sm font-bold leading-snug text-navy-900">{{ $category->trans('name') }}</span>
-                    <span class="flex items-center gap-1 text-xs font-bold uppercase tracking-wide text-gold-600 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                        {{ __('home.fields_cta') }} <x-heroicon-o-arrow-right class="h-3 w-3" />
-                    </span>
-                </a>
+                <x-activity-panel :category="$category" />
             @endforeach
         </div>
     </section>
