@@ -39,7 +39,9 @@
         </g>
     </svg>
 
+    <div class="hero-visual__core-light"></div>
+
     <div class="hero-visual__logo">
-        <img src="{{ $logoUrl }}" alt="{{ $logoAlt }}" width="176" height="176" class="hero-visual__logo-img">
+        <img src="{{ $logoUrl }}" alt="{{ $logoAlt }}" width="200" height="200" class="hero-visual__logo-img">
     </div>
 </div>

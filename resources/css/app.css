@@ -57,11 +57,16 @@
 
 @keyframes hero-logo-pulse {
     0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.015); }
+    50% { transform: scale(1.01); }
 }
 
 @keyframes hero-dot-fade {
     0%, 100% { opacity: .15; }
+    50% { opacity: 1; }
+}
+
+@keyframes hero-core-pulse {
+    0%, 100% { opacity: .75; }
     50% { opacity: 1; }
 }
 
@@ -226,12 +231,32 @@ html {
         inset: -8%;
         border-radius: 9999px;
         background:
-            radial-gradient(circle at 50% 50%, rgba(56, 150, 231, .22), transparent 55%),
-            radial-gradient(circle at 60% 40%, rgba(212, 165, 55, .14), transparent 60%);
+            radial-gradient(circle at 50% 50%, rgba(56, 150, 231, .26), transparent 55%),
+            radial-gradient(circle at 60% 40%, rgba(212, 165, 55, .16), transparent 60%);
         filter: blur(26px);
         transform: translate3d(calc(var(--hero-px) * .4), calc(var(--hero-py) * .4), 0);
         transition: transform .2s ease-out;
         animation: hero-layer-in .8s cubic-bezier(.16, .84, .44, 1) both;
+    }
+
+    /* A tighter, brighter halo directly behind the logo — this is what
+       reads as "light source behind glass", separate from the big ambient
+       glow above so the logo has an immediate rim of light around its
+       silhouette instead of just sitting on a diffuse background. Purely a
+       blurred gradient layer; nothing here ever touches the logo itself. */
+    .hero-visual__core-light {
+        position: absolute;
+        inset: 22%;
+        border-radius: 9999px;
+        background: radial-gradient(circle, rgba(255, 250, 235, .5) 0%, rgba(120, 190, 255, .22) 45%, transparent 72%);
+        filter: blur(18px);
+        /* Same rule as the logo pulse below: the infinite animation must be
+           listed first and the one-shot entrance must use `backwards` (not
+           `both`), otherwise the entrance's forwards-held opacity would
+           permanently mask the pulse once it finishes. */
+        animation:
+            hero-core-pulse 6.5s ease-in-out .9s infinite,
+            hero-layer-in .8s cubic-bezier(.16, .84, .44, 1) .5s backwards;
     }
 
     .hero-visual__particles {
@@ -329,10 +354,18 @@ html {
     }
 
     .hero-visual__logo-img {
-        height: 9.5rem;
-        width: 9.5rem;
+        height: 10.5rem;
+        width: 10.5rem;
         object-fit: contain;
-        filter: drop-shadow(0 0 34px rgba(212, 165, 55, .28));
+        /* Three stacked drop-shadows (alpha-aware, never touches the pixels
+           of the logo itself — unlike `filter: blur`, which would): a tight
+           dark contact shadow so the mark reads as sitting in front of the
+           rings instead of pasted flat, plus a blue and a gold glow ring
+           echoing the site's own palette. Stays pin-sharp at every size. */
+        filter:
+            drop-shadow(0 2px 3px rgba(0, 0, 20, .35))
+            drop-shadow(0 0 22px rgba(96, 189, 255, .38))
+            drop-shadow(0 0 44px rgba(212, 165, 55, .30));
         /* backwards (not both): once the one-shot entry finishes it must
            stop touching `transform` so the infinite pulse can take over
            uncontested, instead of being frozen out by a forwards-fill. */
@@ -343,8 +376,8 @@ html {
 
     @media (min-width: 1280px) {
         .hero-visual__logo-img {
-            height: 11rem;
-            width: 11rem;
+            height: 12.5rem;
+            width: 12.5rem;
         }
     }
 
@@ -395,6 +428,7 @@ html {
     .hero-visual__particles,
     .hero-visual__scan,
     .hero-visual__glow,
+    .hero-visual__core-light,
     .hero-visual__logo,
     .hero-ring--outer,
     .hero-ring--dashed,

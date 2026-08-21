@@ -25,12 +25,17 @@
                 </div>
             </div>
             <div class="relative hidden md:block">
-                @if(!empty($siteSettings['logo_path'] ?? null))
-                    <x-hero-visual
-                        :logo-url="\Illuminate\Support\Facades\Storage::disk('public')->url($siteSettings['logo_path'])"
-                        :logo-alt="$siteSettings['company_short_name'] ?? ''"
-                    />
-                @endif
+                {{--
+                    The hero uses a dedicated transparent-background asset
+                    (not $siteSettings['logo_path'], which is the header/
+                    footer badge with its own navy backdrop) — floating that
+                    version over the animated visual would show up as a
+                    solid square. Header/footer/favicon are untouched.
+                --}}
+                <x-hero-visual
+                    logo-url="{{ asset('images/brand/viettc-logo.png') }}"
+                    :logo-alt="$siteSettings['company_short_name'] ?? ''"
+                />
             </div>
         </div>
 
