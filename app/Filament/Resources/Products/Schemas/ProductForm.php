@@ -13,6 +13,7 @@ use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Components\Text;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Str;
 
@@ -32,27 +33,65 @@ class ProductForm
                                     ->relationship('category', 'name')
                                     ->searchable()
                                     ->preload()
-                                    ->required(),
-                                TextInput::make('name')
-                                    ->label('Tên sản phẩm')
                                     ->required()
-                                    ->live(onBlur: true)
-                                    ->afterStateUpdated(fn ($state, $set) => $set('slug', Str::slug($state)))
-                                    ->columnSpan(1),
-                                TextInput::make('slug')
-                                    ->label('Slug (URL)')
-                                    ->required()
-                                    ->unique(ignoreRecord: true)
                                     ->columnSpan(1),
                                 TextInput::make('model_number')
-                                    ->label('Model / Mã sản phẩm'),
-                                TextInput::make('short_description')
-                                    ->label('Mô tả ngắn')
-                                    ->maxLength(255)
-                                    ->columnSpanFull(),
-                                RichEditor::make('description')
-                                    ->label('Mô tả chi tiết')
-                                    ->columnSpanFull(),
+                                    ->label('Model / Mã sản phẩm')
+                                    ->helperText('Không dịch — giữ nguyên ở cả 2 ngôn ngữ.')
+                                    ->columnSpan(1),
+
+                                Tabs::make('ProductTranslations')
+                                    ->columnSpanFull()
+                                    ->tabs([
+                                        Tab::make('🇻🇳 Tiếng Việt')
+                                            ->schema([
+                                                TextInput::make('name')
+                                                    ->label('Tên sản phẩm')
+                                                    ->required()
+                                                    ->live(onBlur: true)
+                                                    ->afterStateUpdated(fn ($state, $set) => $set('slug', Str::slug($state)))
+                                                    ->columnSpan(1),
+                                                TextInput::make('slug')
+                                                    ->label('Slug (URL)')
+                                                    ->required()
+                                                    ->unique(ignoreRecord: true)
+                                                    ->columnSpan(1),
+                                                TextInput::make('short_description')
+                                                    ->label('Mô tả ngắn')
+                                                    ->maxLength(255)
+                                                    ->columnSpanFull(),
+                                                RichEditor::make('description')
+                                                    ->label('Mô tả chi tiết')
+                                                    ->columnSpanFull(),
+                                            ])
+                                            ->columns(2),
+                                        Tab::make('🇬🇧 English')
+                                            ->badge(fn ($record) => $record && blank($record->name_en) ? '!' : null)
+                                            ->badgeColor('warning')
+                                            ->schema([
+                                                TextInput::make('name_en')
+                                                    ->label('Product name (EN)')
+                                                    ->live(onBlur: true)
+                                                    ->afterStateUpdated(fn ($state, $set) => $set('slug_en', $state ? Str::slug($state) : null))
+                                                    ->columnSpan(1),
+                                                TextInput::make('slug_en')
+                                                    ->label('Slug (EN URL)')
+                                                    ->unique(ignoreRecord: true)
+                                                    ->helperText('Để trống sẽ tự tạo từ Product name (EN).')
+                                                    ->columnSpan(1),
+                                                TextInput::make('short_description_en')
+                                                    ->label('Short description (EN)')
+                                                    ->maxLength(255)
+                                                    ->columnSpanFull(),
+                                                RichEditor::make('description_en')
+                                                    ->label('Full description (EN)')
+                                                    ->columnSpanFull(),
+                                                Text::make('Chưa dịch sẽ tự động hiển thị bản tiếng Việt trên website (fallback) — không để trống ngoài ý muốn khi đã có nội dung EN.')
+                                                    ->color('gray')
+                                                    ->columnSpanFull(),
+                                            ])
+                                            ->columns(2),
+                                    ]),
                             ])
                             ->columns(2),
 
@@ -88,9 +127,15 @@ class ProductForm
                         Tab::make('Tài liệu (PDF)')
                             ->schema([
                                 Repeater::make('documents')
-                                    ->label('Catalogue / Brochure PDF (tối đa 5 file)')
+                                    ->label('Catalogue / Brochure PDF (tối đa 10 file — VI và EN riêng biệt)')
                                     ->relationship('documents')
                                     ->schema([
+                                        Select::make('locale')
+                                            ->label('Ngôn ngữ tài liệu')
+                                            ->options(['vi' => '🇻🇳 Tiếng Việt', 'en' => '🇬🇧 English'])
+                                            ->default('vi')
+                                            ->required()
+                                            ->native(false),
                                         FileUpload::make('path')
                                             ->label('File PDF')
                                             ->disk('public')
@@ -108,12 +153,13 @@ class ProductForm
                                             }),
                                         TextInput::make('label')
                                             ->label('Nhãn tài liệu')
-                                            ->placeholder('VD: Catalogue Tiếng Việt')
+                                            ->placeholder('VD: Catalogue / Datasheet')
                                             ->columnSpanFull(),
                                     ])
+                                    ->columns(2)
                                     ->reorderable()
                                     ->orderColumn('sort_order')
-                                    ->maxItems(5)
+                                    ->maxItems(10)
                                     ->addActionLabel('Thêm tài liệu')
                                     ->collapsible()
                                     ->columnSpanFull(),
@@ -126,14 +172,22 @@ class ProductForm
                                     ->relationship('specs')
                                     ->schema([
                                         TextInput::make('spec_group')
-                                            ->label('Nhóm')
+                                            ->label('Nhóm (VI)')
                                             ->placeholder('VD: Tổng quan, Hiệu năng...'),
                                         TextInput::make('spec_key')
-                                            ->label('Thông số')
+                                            ->label('Thông số (VI)')
                                             ->required(),
                                         TextInput::make('spec_value')
-                                            ->label('Giá trị')
-                                            ->required(),
+                                            ->label('Giá trị (số/đơn vị — dùng chung 2 ngôn ngữ)')
+                                            ->required()
+                                            ->helperText('Số liệu, đơn vị, model... không đổi giữa VI/EN.'),
+                                        TextInput::make('spec_group_en')
+                                            ->label('Group (EN)'),
+                                        TextInput::make('spec_key_en')
+                                            ->label('Spec label (EN)'),
+                                        TextInput::make('spec_value_en')
+                                            ->label('Value override (EN, hiếm khi cần)')
+                                            ->helperText('Chỉ điền nếu giá trị là văn bản mô tả cần dịch — để trống nếu là số/đơn vị.'),
                                     ])
                                     ->columns(3)
                                     ->reorderable()

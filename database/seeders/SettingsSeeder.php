@@ -29,8 +29,11 @@ class SettingsSeeder extends Seeder
             'website' => 'https://www.vietthang.vn',
             'logo_path' => 'settings/logo.png',
             'hero_headline' => 'CÔNG NGHỆ TIÊN TIẾN. GIẢI PHÁP TIN CẬY.',
+            'hero_headline_en' => 'ADVANCED TECHNOLOGY. TRUSTED SOLUTIONS.',
             'hero_subheadline' => 'Cung cấp các giải pháp và thiết bị công nghệ cao cho an ninh, quốc phòng và hạ tầng trọng yếu.',
+            'hero_subheadline_en' => 'Providing high-technology solutions and equipment for security, defense and critical infrastructure.',
             'about_summary' => 'Công ty Cổ phần Thiết bị Công nghiệp và Chuyển giao Công nghệ Việt Thắng (VIETTC., JSC) thành lập năm 2003, là nhà nhập khẩu, phân phối độc quyền và nhà sản xuất các trang thiết bị nghiệp vụ đặc biệt phục vụ an ninh - quốc phòng tại Việt Nam.',
+            'about_summary_en' => 'Viet Thang Industrial Equipment and Technology Transfer Joint Stock Company (VIETTC., JSC), founded in 2003, is an importer, exclusive distributor and manufacturer of specialized equipment for the security and defense sector in Vietnam.',
         ];
 
         foreach ($settings as $key => $value) {

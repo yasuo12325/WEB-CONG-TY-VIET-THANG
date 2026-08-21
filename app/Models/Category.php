@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasTranslatedFields;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -9,12 +10,18 @@ use Illuminate\Support\Str;
 
 class Category extends Model
 {
+    use HasTranslatedFields;
+
+    protected array $translatable = ['name', 'description'];
+
     protected $fillable = [
         'name',
+        'name_en',
         'slug',
         'group_code',
         'parent_id',
         'description',
+        'description_en',
         'icon',
         'sort_order',
         'is_active',

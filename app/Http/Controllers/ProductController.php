@@ -25,9 +25,20 @@ class ProductController extends Controller
 
         if ($request->filled('q')) {
             $search = $request->string('q');
-            $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
+            $nameField = app()->getLocale() === 'en' ? 'name_en' : 'name';
+            $descField = app()->getLocale() === 'en' ? 'short_description_en' : 'short_description';
+
+            $query->where(function ($q) use ($search, $nameField, $descField) {
+                $q->where($nameField, 'like', "%{$search}%")
+                    ->orWhere($descField, 'like', "%{$search}%")
                     ->orWhere('model_number', 'like', "%{$search}%");
+
+                // A translation may not exist yet for every product — also
+                // match the Vietnamese source so a search never silently
+                // returns nothing just because name_en is still blank.
+                if ($nameField !== 'name') {
+                    $q->orWhere('name', 'like', "%{$search}%");
+                }
             });
         }
 
@@ -54,7 +65,15 @@ class ProductController extends Controller
             404
         );
 
-        $product->load(['category', 'images', 'documents', 'specs']);
+        $product->load(['category', 'images', 'specs']);
+
+        // Documents are locale-specific rows (see product_documents.locale);
+        // fall back to the Vietnamese edition when no English document has
+        // been uploaded yet, rather than showing an empty list.
+        $documents = $product->documents()->forLocale(app()->getLocale())->get();
+        if ($documents->isEmpty() && app()->getLocale() === 'en') {
+            $documents = $product->documents()->forLocale('vi')->get();
+        }
 
         $relatedProducts = Product::published()
             ->where('category_id', $product->category_id)
@@ -65,6 +84,7 @@ class ProductController extends Controller
 
         return view('products.show', [
             'product' => $product,
+            'documents' => $documents,
             'relatedProducts' => $relatedProducts,
         ]);
     }

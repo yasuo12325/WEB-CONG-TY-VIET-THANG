@@ -29,6 +29,7 @@ class ProductSeeder extends Seeder
     public function run(): void
     {
         $dataPath = database_path('seeders/data/catalog.json');
+        $dataPathEn = database_path('seeders/data/catalog_en.json');
         $imagesPath = database_path('seeders/data/products');
 
         if (! file_exists($dataPath)) {
@@ -39,6 +40,18 @@ class ProductSeeder extends Seeder
 
         $catalog = json_decode(file_get_contents($dataPath), true, flags: JSON_THROW_ON_ERROR);
         $categoriesByCode = Category::whereNotNull('group_code')->get()->keyBy('group_code');
+
+        // English translations are keyed by the same "img" index as the
+        // Vietnamese source, so a missing or not-yet-translated entry simply
+        // means that product falls back to Vietnamese (see Product::trans())
+        // instead of blocking the whole seed.
+        $translationsByImg = [];
+        if (file_exists($dataPathEn)) {
+            $catalogEn = json_decode(file_get_contents($dataPathEn), true, flags: JSON_THROW_ON_ERROR);
+            foreach ($catalogEn['products'] as $itemEn) {
+                $translationsByImg[$itemEn['img']] = $itemEn;
+            }
+        }
 
         $sortOrderPerCategory = [];
 
@@ -55,21 +68,29 @@ class ProductSeeder extends Seeder
             $sortOrderPerCategory[$item['cat']] = ($sortOrderPerCategory[$item['cat']] ?? -1) + 1;
 
             $shortDescription = Str::limit($item['desc'], 200, '…');
+            $translation = $translationsByImg[$item['img']] ?? null;
 
-            $product = Product::updateOrCreate(
-                ['slug' => $slug],
-                [
-                    'category_id' => $category->id,
-                    'name' => $item['name'],
-                    'model_number' => null,
-                    'short_description' => $shortDescription,
-                    'description' => '<p>'.e($item['desc']).'</p>',
-                    'status' => Product::STATUS_PUBLISHED,
-                    'is_featured' => in_array($item['name'], self::FEATURED, true),
-                    'sort_order' => $sortOrderPerCategory[$item['cat']],
-                    'published_at' => now(),
-                ]
-            );
+            $attributes = [
+                'category_id' => $category->id,
+                'name' => $item['name'],
+                'model_number' => null,
+                'short_description' => $shortDescription,
+                'description' => '<p>'.e($item['desc']).'</p>',
+                'status' => Product::STATUS_PUBLISHED,
+                'is_featured' => in_array($item['name'], self::FEATURED, true),
+                'sort_order' => $sortOrderPerCategory[$item['cat']],
+                'published_at' => now(),
+            ];
+
+            if ($translation) {
+                $shortDescriptionEn = Str::limit($translation['desc'], 200, '…');
+                $attributes['name_en'] = $translation['name'];
+                $attributes['slug_en'] = Str::slug($translation['name']);
+                $attributes['short_description_en'] = $shortDescriptionEn;
+                $attributes['description_en'] = '<p>'.e($translation['desc']).'</p>';
+            }
+
+            $product = Product::updateOrCreate(['slug' => $slug], $attributes);
 
             $sourceImage = "{$imagesPath}/".sprintf('%03d.png', $item['img']);
 
@@ -91,6 +112,7 @@ class ProductSeeder extends Seeder
             );
         }
 
-        $this->command?->info('Đã seed '.count($catalog['products']).' sản phẩm theo '.count($catalog['categories']).' nhóm A-G.');
+        $translatedCount = count($translationsByImg);
+        $this->command?->info('Đã seed '.count($catalog['products']).' sản phẩm theo '.count($catalog['categories'])." nhóm A-G ({$translatedCount} sản phẩm có bản dịch tiếng Anh).");
     }
 }

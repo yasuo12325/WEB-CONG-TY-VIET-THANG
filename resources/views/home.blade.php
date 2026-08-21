@@ -9,7 +9,7 @@
 
         <div class="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-4 py-20 lg:grid-cols-2 lg:px-8 lg:py-28">
             <div class="reveal" style="--reveal-delay:0ms">
-                <div class="section-kicker text-gold-400">Việt Thắng · VIETTC., JSC</div>
+                <div class="section-kicker text-gold-400">{{ __('home.company_kicker') }}</div>
                 <h1 class="mt-3 text-3xl font-extrabold leading-tight tracking-wide md:text-5xl">
                     {{ $hero['headline'] }}
                 </h1>
@@ -17,11 +17,11 @@
                     {{ $hero['subheadline'] }}
                 </p>
                 <div class="mt-8 flex flex-wrap gap-4">
-                    <a href="{{ route('products.index') }}" class="btn-gold">
-                        Khám phá giải pháp
+                    <a href="{{ lr('products.index') }}" class="btn-gold">
+                        {{ __('common.explore_solutions') }}
                         <x-heroicon-o-arrow-right class="h-4 w-4" />
                     </a>
-                    <a href="{{ route('about') }}" class="btn-outline">Về chúng tôi</a>
+                    <a href="{{ lr('about') }}" class="btn-outline">{{ __('common.about_us') }}</a>
                 </div>
             </div>
             <div class="relative hidden md:block">
@@ -45,29 +45,29 @@
                 <div class="reveal flex items-center gap-3">
                     <x-heroicon-o-calendar-days class="h-8 w-8 text-gold-400" />
                     <div>
-                        <div class="text-[11px] uppercase tracking-wider text-white/50">Thành lập từ</div>
+                        <div class="text-[11px] uppercase tracking-wider text-white/50">{{ __('home.stat_founded') }}</div>
                         <div class="text-xl font-bold">{{ $stats['founded_year'] }}</div>
                     </div>
                 </div>
                 <div class="reveal flex items-center gap-3">
                     <x-heroicon-o-users class="h-8 w-8 text-gold-400" />
                     <div>
-                        <div class="text-[11px] uppercase tracking-wider text-white/50">Đội ngũ nhân sự</div>
+                        <div class="text-[11px] uppercase tracking-wider text-white/50">{{ __('home.stat_employees') }}</div>
                         <div class="text-xl font-bold"><span data-counter>{{ $stats['employee_count'] }}</span>+</div>
                     </div>
                 </div>
                 <div class="reveal flex items-center gap-3">
                     <x-heroicon-o-globe-alt class="h-8 w-8 text-gold-400" />
                     <div>
-                        <div class="text-[11px] uppercase tracking-wider text-white/50">Đối tác quốc tế</div>
+                        <div class="text-[11px] uppercase tracking-wider text-white/50">{{ __('home.stat_partners') }}</div>
                         <div class="text-xl font-bold"><span data-counter>{{ $stats['partner_count'] }}</span>+</div>
                     </div>
                 </div>
                 <div class="reveal flex items-center gap-3">
                     <x-heroicon-o-shield-check class="h-8 w-8 text-gold-400" />
                     <div>
-                        <div class="text-[11px] uppercase tracking-wider text-white/50">Tin cậy bởi</div>
-                        <div class="text-sm font-bold">Cơ quan Nhà nước &amp; Doanh nghiệp</div>
+                        <div class="text-[11px] uppercase tracking-wider text-white/50">{{ __('home.stat_trusted') }}</div>
+                        <div class="text-sm font-bold">{{ __('home.stat_trusted_value') }}</div>
                     </div>
                 </div>
             </div>
@@ -77,14 +77,14 @@
     {{-- Fields of activity --}}
     <section class="mx-auto max-w-7xl px-4 py-16 lg:px-8 lg:py-24">
         <div class="reveal mx-auto max-w-2xl text-center">
-            <div class="section-kicker">Danh mục trang thiết bị · Nhóm A&ndash;G</div>
-            <h2 class="section-title mt-2">LĨNH VỰC HOẠT ĐỘNG</h2>
+            <div class="section-kicker">{{ __('home.fields_kicker') }}</div>
+            <h2 class="section-title mt-2">{{ __('home.fields_title') }}</h2>
             <div class="mx-auto mt-3 h-1 w-16 bg-gold-500"></div>
         </div>
 
         <div class="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4" data-reveal-stagger="70">
             @foreach($categories as $category)
-                <a href="{{ route('products.index', ['category' => $category->slug]) }}"
+                <a href="{{ lr('products.index', ['category' => $category->slug]) }}"
                    class="reveal group relative flex flex-col gap-4 overflow-hidden rounded-md border border-navy-100 px-5 py-7 transition-all duration-300 hover:-translate-y-1 hover:border-gold-300 hover:shadow-xl hover:shadow-navy-900/10">
                     <div class="flex items-center justify-between">
                         <span class="flex h-12 w-12 items-center justify-center rounded-full bg-navy-900 text-white transition-colors duration-300 group-hover:bg-gold-500 group-hover:text-navy-950">
@@ -94,9 +94,9 @@
                         </span>
                         <span class="group-badge">{{ $category->group_code }}</span>
                     </div>
-                    <span class="text-sm font-bold leading-snug text-navy-900">{{ $category->name }}</span>
+                    <span class="text-sm font-bold leading-snug text-navy-900">{{ $category->trans('name') }}</span>
                     <span class="flex items-center gap-1 text-xs font-bold uppercase tracking-wide text-gold-600 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                        Xem sản phẩm <x-heroicon-o-arrow-right class="h-3 w-3" />
+                        {{ __('home.fields_cta') }} <x-heroicon-o-arrow-right class="h-3 w-3" />
                     </span>
                 </a>
             @endforeach
@@ -108,23 +108,23 @@
         <div class="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(212,165,55,0.10),transparent_50%)]"></div>
         <div class="relative mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 lg:grid-cols-2 lg:px-8">
             <div class="reveal-left">
-                <div class="section-kicker">Năng lực của chúng tôi</div>
+                <div class="section-kicker">{{ __('home.capabilities_kicker') }}</div>
                 <h2 class="mt-2 text-2xl font-extrabold leading-snug md:text-3xl">
-                    GIẢI PHÁP TOÀN DIỆN,<br>TỪ CÔNG NGHỆ ĐẾN VẬN HÀNH
+                    {!! __('home.capabilities_title') !!}
                 </h2>
                 <p class="mt-4 text-white/70">{{ $aboutSummary }}</p>
-                <a href="{{ route('about') }}" class="btn-gold mt-6 inline-flex">
-                    Tìm hiểu thêm
+                <a href="{{ lr('about') }}" class="btn-gold mt-6 inline-flex">
+                    {{ __('common.learn_more') }}
                     <x-heroicon-o-arrow-right class="h-4 w-4" />
                 </a>
             </div>
             <div class="grid grid-cols-2 gap-4 sm:grid-cols-3" data-reveal-stagger="70">
                 @foreach([
-                    ['icon' => 'computer-desktop', 'label' => 'Tích hợp hệ thống'],
-                    ['icon' => 'beaker', 'label' => 'Nghiên cứu & phát triển'],
-                    ['icon' => 'cog-6-tooth', 'label' => 'Sản xuất & chế tạo'],
-                    ['icon' => 'wrench-screwdriver', 'label' => 'Lắp đặt & triển khai'],
-                    ['icon' => 'lifebuoy', 'label' => 'Bảo trì & hỗ trợ'],
+                    ['icon' => 'computer-desktop', 'label' => __('home.capability_systems_integration')],
+                    ['icon' => 'beaker', 'label' => __('home.capability_rd')],
+                    ['icon' => 'cog-6-tooth', 'label' => __('home.capability_manufacturing')],
+                    ['icon' => 'wrench-screwdriver', 'label' => __('home.capability_installation')],
+                    ['icon' => 'lifebuoy', 'label' => __('home.capability_support')],
                 ] as $capability)
                     <div class="reveal-scale flex flex-col items-center justify-center gap-2 rounded-md border border-white/5 bg-white/5 px-3 py-6 text-center transition-colors duration-300 hover:bg-white/10">
                         <x-dynamic-component :component="'heroicon-o-'.$capability['icon']" class="h-7 w-7 text-gold-400" />
@@ -139,8 +139,8 @@
     @if($featuredProducts->isNotEmpty())
         <section class="mx-auto max-w-7xl px-4 py-16 lg:px-8 lg:py-24">
             <div class="reveal mx-auto max-w-2xl text-center">
-                <div class="section-kicker">Tiêu biểu từ 7 nhóm thiết bị</div>
-                <h2 class="section-title mt-2">SẢN PHẨM NỔI BẬT</h2>
+                <div class="section-kicker">{{ __('home.featured_kicker') }}</div>
+                <h2 class="section-title mt-2">{{ __('home.featured_title') }}</h2>
                 <div class="mx-auto mt-3 h-1 w-16 bg-gold-500"></div>
             </div>
 
@@ -151,8 +151,8 @@
             </div>
 
             <div class="mt-10 text-center">
-                <a href="{{ route('products.index') }}" class="inline-flex items-center gap-1.5 font-semibold text-gold-600 hover:text-gold-700">
-                    Xem toàn bộ danh mục sản phẩm
+                <a href="{{ lr('products.index') }}" class="inline-flex items-center gap-1.5 font-semibold text-gold-600 hover:text-gold-700">
+                    {{ __('home.view_full_catalogue') }}
                     <x-heroicon-o-arrow-right class="h-4 w-4" />
                 </a>
             </div>
@@ -163,8 +163,8 @@
     <section class="border-t border-navy-100 bg-navy-50 py-16 lg:py-24">
         <div class="mx-auto max-w-7xl px-4 lg:px-8">
             <div class="reveal mx-auto max-w-2xl text-center">
-                <div class="section-kicker">Đồng hành cùng các hãng công nghệ hàng đầu</div>
-                <h2 class="section-title mt-2">ĐỐI TÁC &amp; NHÀ SẢN XUẤT</h2>
+                <div class="section-kicker">{{ __('home.partners_kicker') }}</div>
+                <h2 class="section-title mt-2">{{ __('home.partners_title') }}</h2>
                 <div class="mx-auto mt-3 h-1 w-16 bg-gold-500"></div>
             </div>
 
@@ -180,8 +180,8 @@
                 @endforeach
             </div>
             <div class="mt-10 text-center">
-                <a href="{{ route('partners') }}" class="inline-flex items-center gap-1.5 font-semibold text-gold-600 hover:text-gold-700">
-                    Xem tất cả đối tác
+                <a href="{{ lr('partners') }}" class="inline-flex items-center gap-1.5 font-semibold text-gold-600 hover:text-gold-700">
+                    {{ __('common.view_all_partners') }}
                     <x-heroicon-o-arrow-right class="h-4 w-4" />
                 </a>
             </div>
@@ -192,22 +192,22 @@
     @if($latestNews->isNotEmpty())
         <section class="mx-auto max-w-7xl px-4 py-16 lg:px-8 lg:py-24">
             <div class="reveal mx-auto max-w-2xl text-center">
-                <div class="section-kicker">Cập nhật</div>
-                <h2 class="section-title mt-2">TIN TỨC MỚI NHẤT</h2>
+                <div class="section-kicker">{{ __('home.news_kicker') }}</div>
+                <h2 class="section-title mt-2">{{ __('home.news_title') }}</h2>
                 <div class="mx-auto mt-3 h-1 w-16 bg-gold-500"></div>
             </div>
 
             <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3" data-reveal-stagger="90">
                 @foreach($latestNews as $article)
-                    <a href="{{ route('news.show', $article) }}" class="reveal group block overflow-hidden rounded-md border border-navy-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-gold-300 hover:shadow-xl hover:shadow-navy-900/10">
+                    <a href="{{ lr('news.show', $article) }}" class="reveal group block overflow-hidden rounded-md border border-navy-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-gold-300 hover:shadow-xl hover:shadow-navy-900/10">
                         <div class="aspect-video overflow-hidden bg-navy-50">
                             @if($article->cover_image_path)
-                                <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($article->cover_image_path) }}" alt="{{ $article->title }}" loading="lazy" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
+                                <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($article->cover_image_path) }}" alt="{{ $article->trans('title') }}" loading="lazy" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
                             @endif
                         </div>
                         <div class="p-4">
                             <div class="text-xs text-navy-400">{{ $article->published_at?->format('d/m/Y') }}</div>
-                            <h3 class="mt-1 font-bold text-navy-900 group-hover:text-gold-600">{{ $article->title }}</h3>
+                            <h3 class="mt-1 font-bold text-navy-900 group-hover:text-gold-600">{{ $article->trans('title') }}</h3>
                         </div>
                     </a>
                 @endforeach
@@ -219,10 +219,10 @@
     <section class="relative overflow-hidden bg-navy-950 py-16 text-center text-white lg:py-20">
         <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,165,55,0.12),transparent_60%)]"></div>
         <div class="reveal-scale relative mx-auto max-w-2xl px-4">
-            <h2 class="text-2xl font-extrabold md:text-3xl">Cần tư vấn giải pháp phù hợp?</h2>
-            <p class="mt-3 text-white/60">Đội ngũ kỹ thuật của {{ $siteSettings['company_short_name'] ?? 'VIETTC., JSC' }} sẵn sàng hỗ trợ khảo sát và đề xuất thiết bị theo yêu cầu nghiệp vụ.</p>
-            <a href="{{ route('contact.show') }}" class="btn-gold mt-6 inline-flex">
-                Liên hệ ngay
+            <h2 class="text-2xl font-extrabold md:text-3xl">{{ __('home.cta_title') }}</h2>
+            <p class="mt-3 text-white/60">{{ __('home.cta_body', ['company' => $siteSettings['company_short_name'] ?? 'VIETTC., JSC']) }}</p>
+            <a href="{{ lr('contact.show') }}" class="btn-gold mt-6 inline-flex">
+                {{ __('common.contact_now') }}
                 <x-heroicon-o-arrow-right class="h-4 w-4" />
             </a>
         </div>

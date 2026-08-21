@@ -57,8 +57,11 @@ class ManageSettings extends Page implements HasForms
             'website' => Setting::get('website'),
             'logo_path' => Setting::get('logo_path'),
             'hero_headline' => Setting::get('hero_headline'),
+            'hero_headline_en' => Setting::get('hero_headline_en'),
             'hero_subheadline' => Setting::get('hero_subheadline'),
+            'hero_subheadline_en' => Setting::get('hero_subheadline_en'),
             'about_summary' => Setting::get('about_summary'),
+            'about_summary_en' => Setting::get('about_summary_en'),
         ]);
     }
 
@@ -98,12 +101,19 @@ class ManageSettings extends Page implements HasForms
                         TextInput::make('email')->label('Email')->email(),
                         TextInput::make('website')->label('Website')->url(),
                     ]),
-                Section::make('Trang chủ')
+                Section::make('Trang chủ — 🇻🇳 Tiếng Việt')
                     ->columns(1)
                     ->schema([
                         TextInput::make('hero_headline')->label('Tiêu đề banner'),
                         Textarea::make('hero_subheadline')->label('Mô tả banner'),
                         Textarea::make('about_summary')->label('Tóm tắt giới thiệu (hiển thị ở trang chủ)'),
+                    ]),
+                Section::make('Trang chủ — 🇬🇧 English')
+                    ->columns(1)
+                    ->schema([
+                        TextInput::make('hero_headline_en')->label('Hero headline (EN)'),
+                        Textarea::make('hero_subheadline_en')->label('Hero subheadline (EN)'),
+                        Textarea::make('about_summary_en')->label('About summary (EN)'),
                     ]),
             ])
             ->statePath('data');

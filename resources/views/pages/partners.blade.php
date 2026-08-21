@@ -3,8 +3,8 @@
 @section('content')
     <section class="bg-navy-950 py-12 text-white">
         <div class="mx-auto max-w-7xl px-4 lg:px-8">
-            <h1 class="text-3xl font-extrabold">Đối tác &amp; Nhà sản xuất</h1>
-            <p class="mt-2 text-white/60">Đại lý, nhà phân phối chính thức của nhiều hãng thiết bị an ninh uy tín trên thế giới.</p>
+            <h1 class="text-3xl font-extrabold">{{ __('pages.partners_title') }}</h1>
+            <p class="mt-2 text-white/60">{{ __('pages.partners_intro') }}</p>
         </div>
     </section>
 
@@ -21,11 +21,11 @@
                     </div>
                     <div>
                         <div class="font-bold text-navy-900">{{ $partner->name }}</div>
-                        @if($partner->country)
-                            <div class="text-xs text-gray-400">{{ $partner->country }}</div>
+                        @if($partner->trans('country'))
+                            <div class="text-xs text-gray-400">{{ $partner->trans('country') }}</div>
                         @endif
-                        @if($partner->specialty)
-                            <div class="mt-1 text-sm text-gray-600">{{ $partner->specialty }}</div>
+                        @if($partner->trans('specialty'))
+                            <div class="mt-1 text-sm text-gray-600">{{ $partner->trans('specialty') }}</div>
                         @endif
                     </div>
                 </div>

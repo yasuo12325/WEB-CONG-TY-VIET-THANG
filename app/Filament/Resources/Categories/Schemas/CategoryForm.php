@@ -7,6 +7,8 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Str;
 
@@ -16,15 +18,38 @@ class CategoryForm
     {
         return $schema
             ->components([
-                TextInput::make('name')
-                    ->label('Tên danh mục')
-                    ->required()
-                    ->live(onBlur: true)
-                    ->afterStateUpdated(fn ($state, $set) => $set('slug', Str::slug($state))),
-                TextInput::make('slug')
-                    ->label('Slug (URL)')
-                    ->required()
-                    ->unique(ignoreRecord: true),
+                Tabs::make('CategoryTranslations')
+                    ->columnSpanFull()
+                    ->tabs([
+                        Tab::make('🇻🇳 Tiếng Việt')
+                            ->schema([
+                                TextInput::make('name')
+                                    ->label('Tên danh mục')
+                                    ->required()
+                                    ->live(onBlur: true)
+                                    ->afterStateUpdated(fn ($state, $set) => $set('slug', Str::slug($state))),
+                                TextInput::make('slug')
+                                    ->label('Slug (URL)')
+                                    ->required()
+                                    ->unique(ignoreRecord: true),
+                                Textarea::make('description')
+                                    ->label('Mô tả')
+                                    ->columnSpanFull(),
+                            ])
+                            ->columns(2),
+                        Tab::make('🇬🇧 English')
+                            ->badge(fn ($record) => $record && blank($record->name_en) ? '!' : null)
+                            ->badgeColor('warning')
+                            ->schema([
+                                TextInput::make('name_en')
+                                    ->label('Category name (EN)'),
+                                Textarea::make('description_en')
+                                    ->label('Description (EN)')
+                                    ->columnSpanFull(),
+                            ])
+                            ->columns(2),
+                    ]),
+
                 TextInput::make('group_code')
                     ->label('Mã nhóm (theo danh mục trang thiết bị, VD: A, B, C...)')
                     ->maxLength(2),
@@ -32,9 +57,6 @@ class CategoryForm
                     ->label('Danh mục cha (để trống nếu là danh mục cấp 1)')
                     ->options(fn () => Category::query()->whereNull('parent_id')->pluck('name', 'id'))
                     ->searchable(),
-                Textarea::make('description')
-                    ->label('Mô tả')
-                    ->columnSpanFull(),
                 TextInput::make('icon')
                     ->label('Icon (tên icon Heroicon, VD: shield-check)'),
                 TextInput::make('sort_order')

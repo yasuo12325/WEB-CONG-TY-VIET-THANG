@@ -26,10 +26,10 @@ class StoreContactMessageRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => 'Vui lòng nhập họ tên.',
-            'email.required' => 'Vui lòng nhập email.',
-            'email.email' => 'Email không hợp lệ.',
-            'message.required' => 'Vui lòng nhập nội dung liên hệ.',
+            'name.required' => __('contact.validation_name_required'),
+            'email.required' => __('contact.validation_email_required'),
+            'email.email' => __('contact.validation_email_invalid'),
+            'message.required' => __('contact.validation_message_required'),
         ];
     }
 }

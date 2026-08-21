@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasTranslatedFields;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -9,7 +10,7 @@ use Illuminate\Support\Str;
 
 class News extends Model
 {
-    use SoftDeletes;
+    use HasTranslatedFields, SoftDeletes;
 
     public const STATUS_DRAFT = 'draft';
 
@@ -17,11 +18,17 @@ class News extends Model
 
     protected $table = 'news';
 
+    protected array $translatable = ['title', 'excerpt', 'body'];
+
     protected $fillable = [
         'title',
+        'title_en',
         'slug',
+        'slug_en',
         'excerpt',
+        'excerpt_en',
         'body',
+        'body_en',
         'cover_image_path',
         'status',
         'published_at',
@@ -40,6 +47,10 @@ class News extends Model
         static::saving(function (News $news) {
             if (blank($news->slug)) {
                 $news->slug = Str::slug($news->title);
+            }
+
+            if (filled($news->title_en) && blank($news->slug_en)) {
+                $news->slug_en = Str::slug($news->title_en);
             }
 
             if ($news->status === self::STATUS_PUBLISHED && blank($news->published_at)) {
@@ -64,5 +75,27 @@ class News extends Model
     public function getRouteKeyName(): string
     {
         return 'slug';
+    }
+
+    public function getRouteKey()
+    {
+        if (app()->getLocale() === 'en' && filled($this->slug_en)) {
+            return $this->slug_en;
+        }
+
+        return $this->slug;
+    }
+
+    public function resolveRouteBinding($value, $field = null)
+    {
+        if (app()->getLocale() === 'en') {
+            $bySlugEn = static::where('slug_en', $value)->first();
+
+            if ($bySlugEn) {
+                return $bySlugEn;
+            }
+        }
+
+        return static::where('slug', $value)->first();
     }
 }

@@ -10,6 +10,7 @@ class ProductDocument extends Model
 {
     protected $fillable = [
         'product_id',
+        'locale',
         'disk',
         'path',
         'original_filename',
@@ -29,6 +30,11 @@ class ProductDocument extends Model
         static::deleted(function (ProductDocument $document) {
             Storage::disk($document->disk)->delete($document->path);
         });
+    }
+
+    public function scopeForLocale($query, string $locale)
+    {
+        return $query->where('locale', $locale);
     }
 
     public function getUrlAttribute(): string

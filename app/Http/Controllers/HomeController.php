@@ -47,10 +47,10 @@ class HomeController extends Controller
             'partners' => $partners,
             'latestNews' => $latestNews,
             'hero' => [
-                'headline' => Setting::get('hero_headline'),
-                'subheadline' => Setting::get('hero_subheadline'),
+                'headline' => Setting::getTrans('hero_headline'),
+                'subheadline' => Setting::getTrans('hero_subheadline'),
             ],
-            'aboutSummary' => Setting::get('about_summary'),
+            'aboutSummary' => Setting::getTrans('about_summary'),
         ]);
     }
 }

@@ -1,10 +1,10 @@
 @props(['product'])
 
-<a href="{{ route('products.show', $product) }}" class="product-card reveal group">
+<a href="{{ lr('products.show', $product) }}" class="product-card reveal group">
     <div class="product-card-media relative aspect-square overflow-hidden bg-navy-50">
         @if($product->images->isNotEmpty())
             <img src="{{ $product->images->first()->url }}"
-                 alt="{{ $product->images->first()->alt_text ?? $product->name }}"
+                 alt="{{ $product->images->first()->alt_text ?? $product->trans('name') }}"
                  loading="lazy"
                  decoding="async">
         @else
@@ -20,15 +20,15 @@
     </div>
     <div class="flex flex-1 flex-col p-4">
         @if($product->category)
-            <div class="text-[11px] font-bold uppercase tracking-wider text-gold-600">{{ $product->category->name }}</div>
+            <div class="text-[11px] font-bold uppercase tracking-wider text-gold-600">{{ $product->category->trans('name') }}</div>
         @endif
-        <h3 class="mt-1.5 line-clamp-2 font-bold leading-snug text-navy-900">{{ $product->name }}</h3>
-        @if($product->short_description)
-            <p class="mt-2 line-clamp-2 text-xs leading-relaxed text-navy-500">{{ $product->short_description }}</p>
+        <h3 class="mt-1.5 line-clamp-2 font-bold leading-snug text-navy-900">{{ $product->trans('name') }}</h3>
+        @if($product->trans('short_description'))
+            <p class="mt-2 line-clamp-2 text-xs leading-relaxed text-navy-500">{{ $product->trans('short_description') }}</p>
         @endif
         <div class="mt-auto pt-4">
             <span class="product-card-cta">
-                Xem chi tiết
+                {{ __('common.view_details') }}
                 <x-heroicon-o-arrow-right class="h-3.5 w-3.5" />
             </span>
         </div>

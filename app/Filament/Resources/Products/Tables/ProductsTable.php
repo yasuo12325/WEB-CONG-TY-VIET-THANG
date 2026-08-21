@@ -37,6 +37,15 @@ class ProductsTable
                 TextColumn::make('model_number')
                     ->label('Model')
                     ->searchable(),
+                IconColumn::make('name_en')
+                    ->label('EN')
+                    ->boolean()
+                    ->getStateUsing(fn ($record) => filled($record->name_en))
+                    ->trueIcon('heroicon-o-check-circle')
+                    ->falseIcon('heroicon-o-exclamation-triangle')
+                    ->trueColor('success')
+                    ->falseColor('warning')
+                    ->tooltip(fn ($record) => filled($record->name_en) ? 'Đã có bản dịch tiếng Anh' : 'Chưa có bản dịch tiếng Anh — website sẽ tự hiển thị tiếng Việt'),
                 TextColumn::make('status')
                     ->label('Trạng thái')
                     ->badge()

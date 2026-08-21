@@ -25,9 +25,13 @@ class PartnerForm
                     ->maxSize(2048)
                     ->columnSpanFull(),
                 TextInput::make('country')
-                    ->label('Quốc gia'),
+                    ->label('Quốc gia (VI)'),
+                TextInput::make('country_en')
+                    ->label('Country (EN)'),
                 TextInput::make('specialty')
-                    ->label('Chuyên cung cấp'),
+                    ->label('Chuyên cung cấp (VI)'),
+                TextInput::make('specialty_en')
+                    ->label('Specialty (EN)'),
                 TextInput::make('website_url')
                     ->label('Website')
                     ->url()
