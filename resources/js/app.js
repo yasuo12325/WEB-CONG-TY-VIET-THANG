@@ -1,4 +1,5 @@
 import Alpine from 'alpinejs';
+import { initHeroVisual } from './hero-visual';
 
 window.Alpine = Alpine;
 Alpine.start();
@@ -114,6 +115,7 @@ function init() {
     initHeaderScrollState();
     initScrollReveal();
     initCounters();
+    initHeroVisual();
 }
 
 // Vite emits this as a deferred module script, so DOMContentLoaded may have

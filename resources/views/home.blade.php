@@ -24,18 +24,13 @@
                     <a href="{{ route('about') }}" class="btn-outline">Về chúng tôi</a>
                 </div>
             </div>
-            <div class="reveal-scale relative hidden lg:block" style="--reveal-delay:150ms">
-                <div class="relative aspect-square w-full max-w-md mx-auto">
-                    <div class="absolute inset-0 rounded-full border border-gold-400/20"></div>
-                    <div class="absolute inset-8 rounded-full border border-white/10"></div>
-                    <div class="absolute inset-16 rounded-full border border-gold-400/10"></div>
-                    <div class="absolute inset-0 flex items-center justify-center">
-                        @if(!empty($siteSettings['logo_path'] ?? null))
-                            <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($siteSettings['logo_path']) }}"
-                                 alt="{{ $siteSettings['company_short_name'] ?? '' }}" class="h-40 w-40 object-contain drop-shadow-[0_0_40px_rgba(212,165,55,0.25)]">
-                        @endif
-                    </div>
-                </div>
+            <div class="relative hidden md:block">
+                @if(!empty($siteSettings['logo_path'] ?? null))
+                    <x-hero-visual
+                        :logo-url="\Illuminate\Support\Facades\Storage::disk('public')->url($siteSettings['logo_path'])"
+                        :logo-alt="$siteSettings['company_short_name'] ?? ''"
+                    />
+                @endif
             </div>
         </div>
 

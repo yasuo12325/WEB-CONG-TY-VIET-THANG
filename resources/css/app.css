@@ -44,6 +44,43 @@
     to { transform: translateX(-50%); }
 }
 
+/* ---- Hero visual: ring rotation, pulse, scan sweep, layer entrance ----- */
+@keyframes hero-spin-cw {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes hero-spin-ccw {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(-360deg); }
+}
+
+@keyframes hero-logo-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.015); }
+}
+
+@keyframes hero-dot-fade {
+    0%, 100% { opacity: .15; }
+    50% { opacity: 1; }
+}
+
+/* Opacity-only on purpose: several layers below also carry their own
+   continuous transform animation (spin) or a static parallax transform.
+   A finite animation sharing `transform` with those, using fill-mode
+   `both`/`forwards`, would freeze at its last keyframe and permanently
+   block the other transform — so the entrance stagger only ever touches
+   opacity, letting each layer's own transform stay in full control. */
+@keyframes hero-layer-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes hero-logo-entry {
+    from { opacity: 0; transform: scale(.85); }
+    to { opacity: 1; transform: scale(1); }
+}
+
 [x-cloak] {
     display: none !important;
 }
@@ -154,6 +191,176 @@ html {
     }
 }
 
+@layer components {
+    /* ==== Hero visual: "VIETTC Technology Core" ==========================
+       Layered composition (back to front): glow -> particle canvas -> radar
+       scan -> SVG HUD rings/orbits -> logo. Rings/scan/pulse are CSS-driven
+       (transform + opacity only); the particle network runs on <canvas> via
+       resources/js/hero-visual.js. Mouse parallax reads --hero-px/--hero-py
+       custom properties (set by JS) with a different multiplier per layer;
+       scroll fade/scale reads --hero-scroll (0 to 1). All of it degrades to
+       a static state under prefers-reduced-motion. ---------------------- */
+
+    .hero-visual {
+        --hero-px: 0px;
+        --hero-py: 0px;
+        --hero-scroll: 0;
+        position: relative;
+        width: 100%;
+        max-width: 26rem;
+        margin-inline: auto;
+        aspect-ratio: 1 / 1;
+        transform: scale(calc(1 - var(--hero-scroll) * .08));
+        opacity: calc(1 - var(--hero-scroll) * .4);
+        transition: transform .2s ease-out, opacity .2s ease-out;
+    }
+
+    @media (min-width: 1280px) {
+        .hero-visual {
+            max-width: 30rem;
+        }
+    }
+
+    .hero-visual__glow {
+        position: absolute;
+        inset: -8%;
+        border-radius: 9999px;
+        background:
+            radial-gradient(circle at 50% 50%, rgba(56, 150, 231, .22), transparent 55%),
+            radial-gradient(circle at 60% 40%, rgba(212, 165, 55, .14), transparent 60%);
+        filter: blur(26px);
+        transform: translate3d(calc(var(--hero-px) * .4), calc(var(--hero-py) * .4), 0);
+        transition: transform .2s ease-out;
+        animation: hero-layer-in .8s cubic-bezier(.16, .84, .44, 1) both;
+    }
+
+    .hero-visual__particles {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        transform: translate3d(calc(var(--hero-px) * 1.6), calc(var(--hero-py) * 1.6), 0);
+        animation: hero-layer-in .8s cubic-bezier(.16, .84, .44, 1) .3s both;
+    }
+
+    .hero-visual__scan {
+        position: absolute;
+        inset: 6%;
+        border-radius: 9999px;
+        background: conic-gradient(from 0deg, transparent 0deg, rgba(96, 189, 255, .16) 14deg, transparent 34deg, transparent 360deg);
+        animation:
+            hero-spin-cw 13s linear infinite,
+            hero-layer-in .8s cubic-bezier(.16, .84, .44, 1) .9s both;
+    }
+
+    .hero-visual__rings {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+        transform: translate3d(calc(var(--hero-px)), calc(var(--hero-py)), 0);
+        transition: transform .15s ease-out;
+    }
+
+    .hero-ring circle {
+        fill: none;
+        stroke-width: 1;
+        transform-origin: 200px 200px;
+    }
+
+    .hero-ring--outer {
+        animation: hero-spin-cw 90s linear infinite, hero-layer-in .8s cubic-bezier(.16, .84, .44, 1) .15s both;
+    }
+    .hero-ring--outer circle {
+        stroke: rgba(143, 163, 221, .35);
+    }
+
+    .hero-ring--dashed {
+        animation: hero-spin-ccw 65s linear infinite, hero-layer-in .8s cubic-bezier(.16, .84, .44, 1) .15s both;
+    }
+    .hero-ring--dashed circle {
+        stroke: rgba(96, 189, 255, .3);
+    }
+
+    .hero-ring--segmented {
+        animation: hero-spin-cw 48s linear infinite, hero-layer-in .8s cubic-bezier(.16, .84, .44, 1) .45s both;
+    }
+    .hero-ring--segmented circle {
+        stroke: rgba(212, 165, 55, .32);
+        stroke-width: 1.5;
+    }
+
+    .hero-ring--inner {
+        animation: hero-spin-ccw 36s linear infinite, hero-layer-in .8s cubic-bezier(.16, .84, .44, 1) .45s both;
+    }
+    .hero-ring--inner circle {
+        stroke: rgba(228, 233, 247, .4);
+    }
+
+    .hero-orbit {
+        transform-origin: 200px 200px;
+    }
+    .hero-orbit--1 { animation: hero-spin-cw 14s linear infinite, hero-layer-in .6s ease-out .75s both; }
+    .hero-orbit--2 { animation: hero-spin-ccw 20s linear infinite, hero-layer-in .6s ease-out .85s both; }
+    .hero-orbit--3 { animation: hero-spin-cw 26s linear infinite, hero-layer-in .6s ease-out .95s both; }
+
+    .hero-dot {
+        fill: rgba(148, 197, 255, .9);
+        animation: hero-dot-fade 3.6s ease-in-out infinite;
+    }
+    .hero-dot--gold {
+        fill: var(--color-gold-400);
+        animation-duration: 4.4s;
+    }
+    .hero-dot--soft {
+        fill: rgba(228, 233, 247, .8);
+        animation-duration: 5.2s;
+    }
+
+    .hero-visual__logo {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: translate3d(calc(var(--hero-px) * .2), calc(var(--hero-py) * .2), 0);
+        animation: hero-layer-in .7s cubic-bezier(.16, .84, .44, 1) .6s both;
+    }
+
+    .hero-visual__logo-img {
+        height: 9.5rem;
+        width: 9.5rem;
+        object-fit: contain;
+        filter: drop-shadow(0 0 34px rgba(212, 165, 55, .28));
+        /* backwards (not both): once the one-shot entry finishes it must
+           stop touching `transform` so the infinite pulse can take over
+           uncontested, instead of being frozen out by a forwards-fill. */
+        animation:
+            hero-logo-pulse 6.5s ease-in-out .9s infinite,
+            hero-logo-entry .7s cubic-bezier(.16, .84, .44, 1) .55s backwards;
+    }
+
+    @media (min-width: 1280px) {
+        .hero-visual__logo-img {
+            height: 11rem;
+            width: 11rem;
+        }
+    }
+
+    /* Tablet tier (md-lg): keep the logo, glow and the two primary rings;
+       drop the particle canvas, radar scan and outer orbit for a lighter,
+       still-premium composition instead of the full desktop system. */
+    @media (max-width: 1023px) {
+        .hero-visual__particles,
+        .hero-visual__scan,
+        .hero-ring--segmented,
+        .hero-orbit--3 {
+            display: none;
+        }
+    }
+}
+
 /* Respect the user's motion preference: skip transforms/transitions and show content immediately. */
 @media (prefers-reduced-motion: reduce) {
     html {
@@ -182,5 +389,29 @@ html {
 
     .product-card:hover .product-card-media img {
         transform: none !important;
+    }
+
+    .hero-visual,
+    .hero-visual__particles,
+    .hero-visual__scan,
+    .hero-visual__glow,
+    .hero-visual__logo,
+    .hero-ring--outer,
+    .hero-ring--dashed,
+    .hero-ring--segmented,
+    .hero-ring--inner,
+    .hero-orbit--1,
+    .hero-orbit--2,
+    .hero-orbit--3,
+    .hero-dot,
+    .hero-visual__logo-img {
+        animation: none !important;
+        transition: none !important;
+        transform: none !important;
+        opacity: 1 !important;
+    }
+
+    .hero-visual__scan {
+        display: none;
     }
 }
