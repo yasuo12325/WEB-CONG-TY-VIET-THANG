@@ -36,6 +36,7 @@ class AppServiceProvider extends ServiceProvider
                 'founded_year' => Setting::get('founded_year'),
                 'employee_count' => Setting::get('employee_count'),
                 'partner_count' => Setting::get('partner_count'),
+                'about_summary' => Setting::get('about_summary'),
             ] : []);
 
             $view->with('navCategories', Category::query()

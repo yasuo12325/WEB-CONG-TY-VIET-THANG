@@ -15,6 +15,9 @@ class CategoriesTable
     {
         return $table
             ->columns([
+                TextColumn::make('group_code')
+                    ->label('Nhóm')
+                    ->badge(),
                 TextColumn::make('name')
                     ->label('Tên danh mục')
                     ->searchable()

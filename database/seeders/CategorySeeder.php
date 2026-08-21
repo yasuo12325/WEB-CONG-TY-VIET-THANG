@@ -7,55 +7,62 @@ use Illuminate\Database\Seeder;
 
 class CategorySeeder extends Seeder
 {
+    /**
+     * 7 nhóm danh mục theo đúng cấu trúc tài liệu nguồn
+     * "DANH MỤC TRANG THIẾT BỊ" (nhóm A-G).
+     */
     public function run(): void
     {
         $categories = [
             [
-                'name' => 'Camera & Hệ thống giám sát',
-                'icon' => 'video-camera',
-                'description' => 'Hệ thống theo dõi thông minh Camera CCTV giám sát an ninh.',
+                'group_code' => 'A',
+                'name' => 'Soi chiếu, phát hiện vũ khí, hàng lậu, chất nổ, chất phóng xạ',
+                'icon' => 'viewfinder-circle',
+                'description' => 'Thiết bị soi chiếu X-quang, tán xạ ngược, cổng phát hiện chất nổ - vũ khí, máy dò chất độc, chất phóng xạ và hàng cấm.',
             ],
             [
-                'name' => 'Thiết bị xử lý tài liệu chuyên dụng',
-                'icon' => 'document-magnifying-glass',
-                'description' => 'Hệ thống xử lý kỹ thuật tài liệu chuyên dụng phục vụ công tác nghiệp vụ.',
-            ],
-            [
-                'name' => 'Thiết bị phát hiện & tìm kiếm',
-                'icon' => 'magnifying-glass',
-                'description' => 'Các thiết bị phục vụ cho công tác nghiệp vụ phát hiện và tìm kiếm.',
-            ],
-            [
-                'name' => 'Thiết bị an toàn & chống khủng bố',
-                'icon' => 'shield-exclamation',
-                'description' => 'Thiết bị an toàn phòng chống cháy nổ, phát hiện vật liệu cất giấu, phòng chống khủng bố.',
-            ],
-            [
-                'name' => 'Thiết bị quét hiện trường & giám định',
-                'icon' => 'cube',
-                'description' => 'Thiết bị quét, dựng hiện trường 3D và vật tư tiêu hao trong quá trình giám định.',
-            ],
-            [
-                'name' => 'Thiết bị sinh trắc học & phân tích số',
+                'group_code' => 'B',
+                'name' => 'Hệ thống, phần mềm sinh trắc học, pháp y âm thanh, hình ảnh',
                 'icon' => 'finger-print',
-                'description' => 'Giải pháp nhận dạng khuôn mặt, sinh trắc học âm thanh, phân tích điều tra kỹ thuật số.',
+                'description' => 'Giải pháp giám định âm thanh, nhận diện khuôn mặt, phân tích vân tay và dữ liệu điện tử phục vụ điều tra.',
             ],
             [
-                'name' => 'Thiết bị đo lường & phân tích môi trường',
-                'icon' => 'beaker',
-                'description' => 'Hệ thống đo và phân tích môi trường, kiểm tra tiền và giấy tờ.',
+                'group_code' => 'C',
+                'name' => 'Hệ thống thiết bị phát hiện nghe lén, bảo vệ thông tin',
+                'icon' => 'signal-slash',
+                'description' => 'Thiết bị dò thiết bị nghe lén trên đường dây, sóng RF, ống kính quang học và bảo vệ an ninh thông tin.',
             ],
             [
-                'name' => 'Chuyển giao công nghệ',
-                'icon' => 'cog-6-tooth',
-                'description' => 'Công nghệ và dây chuyền sản xuất thiết bị nghiệp vụ đặc biệt, công nghệ lắp ráp CCTV.',
+                'group_code' => 'D',
+                'name' => 'Thiết bị trinh sát kỹ thuật',
+                'icon' => 'signal',
+                'description' => 'Thiết bị quan sát ngày/đêm, ghi âm - ghi hình định hướng, định vị thuê bao di động và trinh sát kỹ thuật.',
+            ],
+            [
+                'group_code' => 'E',
+                'name' => 'Các công cụ hỗ trợ, bảo vệ mục tiêu, trấn áp tội phạm',
+                'icon' => 'shield-check',
+                'description' => 'Súng chế áp Drone/UAV, đèn chiếu, khiên chống bạo động và công cụ hỗ trợ trấn áp tội phạm.',
+            ],
+            [
+                'group_code' => 'F',
+                'name' => 'Giải pháp sao chép, chế tạo mẫu',
+                'icon' => 'printer',
+                'description' => 'Hệ thống quét 3D laser cầm tay, in 3D kim loại và in 3D nhựa công nghệ FDM.',
+            ],
+            [
+                'group_code' => 'G',
+                'name' => 'Các hệ thống, thiết bị khác',
+                'icon' => 'squares-2x2',
+                'description' => 'Kính hiển vi giám định, hệ thống camera an ninh, phòng Lab phục hồi dữ liệu số và các thiết bị chuyên dụng khác.',
             ],
         ];
 
         foreach ($categories as $index => $category) {
             Category::updateOrCreate(
-                ['name' => $category['name']],
+                ['group_code' => $category['group_code']],
                 [
+                    'name' => $category['name'],
                     'description' => $category['description'],
                     'icon' => $category['icon'],
                     'sort_order' => $index,
@@ -63,5 +70,8 @@ class CategorySeeder extends Seeder
                 ]
             );
         }
+
+        // Loại bỏ danh mục cũ không còn thuộc cấu trúc A-G (an toàn vì chưa có sản phẩm nào gắn vào các danh mục này).
+        Category::whereNull('group_code')->whereDoesntHave('products')->delete();
     }
 }

@@ -7,31 +7,180 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 
-    --color-navy-950: #050b1a;
-    --color-navy-900: #0a1530;
-    --color-navy-800: #0f1e42;
-    --color-navy-700: #16295a;
-    --color-navy-600: #1e3a75;
+    /* Navy scale anchored on the official brand mark (#000056) so every dark
+       surface on the site reads as the same navy as the logo backdrop. */
+    --color-navy-950: #00003c;
+    --color-navy-900: #000056;
+    --color-navy-800: #0a1968;
+    --color-navy-700: #142a84;
+    --color-navy-600: #1f3d9c;
+    --color-navy-500: #3355b8;
+    --color-navy-400: #5b78cc;
+    --color-navy-300: #8fa3dd;
+    --color-navy-200: #c2cdec;
+    --color-navy-100: #e4e9f7;
+    --color-navy-50: #f5f7fc;
 
+    --color-gold-700: #92700f;
+    --color-gold-600: #b8871f;
     --color-gold-500: #d4a537;
     --color-gold-400: #e3bb56;
     --color-gold-300: #f0d183;
+    --color-gold-200: #f5dfa8;
+    --color-gold-100: #faf0d9;
+    --color-gold-50: #fdf8ec;
+
+    --animate-fade-in: fade-in .8s cubic-bezier(.16,.84,.44,1) both;
+    --animate-marquee: marquee 32s linear infinite;
+}
+
+@keyframes fade-in {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
 }
 
 [x-cloak] {
     display: none !important;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 @layer components {
     .btn-gold {
-        @apply inline-flex items-center gap-2 rounded-sm bg-gold-500 px-6 py-3 font-semibold text-navy-950 transition hover:bg-gold-400;
+        @apply inline-flex items-center gap-2 rounded-sm bg-gold-500 px-6 py-3 font-semibold text-navy-950 transition duration-300 hover:bg-gold-400 hover:shadow-lg hover:shadow-gold-500/20;
     }
 
     .btn-outline {
-        @apply inline-flex items-center gap-2 rounded-sm border border-white/40 px-6 py-3 font-semibold text-white transition hover:border-white hover:bg-white/10;
+        @apply inline-flex items-center gap-2 rounded-sm border border-white/30 px-6 py-3 font-semibold text-white transition duration-300 hover:border-white hover:bg-white/10;
     }
 
     .section-title {
         @apply text-2xl font-bold tracking-wide text-navy-900 md:text-3xl;
+    }
+
+    .section-kicker {
+        @apply text-xs font-bold uppercase tracking-[0.2em] text-gold-600;
+    }
+
+    .group-badge {
+        @apply inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-sm bg-navy-900 text-[11px] font-extrabold text-gold-300;
+    }
+
+    /* ---- Motion: scroll reveal ---------------------------------------- */
+    .reveal {
+        opacity: 0;
+        transform: translateY(28px);
+        transition: opacity .7s cubic-bezier(.16,.84,.44,1), transform .7s cubic-bezier(.16,.84,.44,1);
+        transition-delay: var(--reveal-delay, 0ms);
+        will-change: opacity, transform;
+    }
+
+    .reveal-scale {
+        opacity: 0;
+        transform: scale(.94);
+        transition: opacity .7s cubic-bezier(.16,.84,.44,1), transform .7s cubic-bezier(.16,.84,.44,1);
+        transition-delay: var(--reveal-delay, 0ms);
+    }
+
+    .reveal-left {
+        opacity: 0;
+        transform: translateX(-28px);
+        transition: opacity .7s cubic-bezier(.16,.84,.44,1), transform .7s cubic-bezier(.16,.84,.44,1);
+        transition-delay: var(--reveal-delay, 0ms);
+    }
+
+    .reveal-right {
+        opacity: 0;
+        transform: translateX(28px);
+        transition: opacity .7s cubic-bezier(.16,.84,.44,1), transform .7s cubic-bezier(.16,.84,.44,1);
+        transition-delay: var(--reveal-delay, 0ms);
+    }
+
+    .reveal.is-visible,
+    .reveal-scale.is-visible,
+    .reveal-left.is-visible,
+    .reveal-right.is-visible {
+        opacity: 1;
+        transform: none;
+    }
+
+    /* ---- Site header: sticky, permanently navy (matches the logo backdrop),
+       gains a stronger blur + shadow once the page scrolls. -------------- */
+    .site-header {
+        @apply sticky top-0 z-50 border-b border-white/10 bg-navy-900/90 backdrop-blur-sm transition-[background-color,backdrop-filter,box-shadow] duration-300;
+    }
+
+    .site-header.is-scrolled {
+        @apply bg-navy-900/98 shadow-lg shadow-black/30 backdrop-blur-md;
+    }
+
+    /* ---- Product card ---------------------------------------------------- */
+    .product-card {
+        @apply relative flex h-full flex-col overflow-hidden rounded-md border border-navy-100 bg-white transition-all duration-300;
+    }
+
+    .product-card:hover {
+        @apply -translate-y-1.5 border-gold-300 shadow-xl shadow-navy-900/10;
+    }
+
+    .product-card .product-card-media img {
+        @apply h-full w-full object-cover transition-transform duration-500 ease-out;
+    }
+
+    .product-card:hover .product-card-media img {
+        transform: scale(1.07);
+    }
+
+    .product-card-cta {
+        @apply inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wide text-gold-600 opacity-0 transition-all duration-300;
+        transform: translateX(-6px);
+    }
+
+    .product-card:hover .product-card-cta {
+        @apply opacity-100;
+        transform: translateX(0);
+    }
+
+    /* ---- Number counter placeholder before JS runs ----------------------- */
+    [data-counter] {
+        font-variant-numeric: tabular-nums;
+    }
+}
+
+/* Respect the user's motion preference: skip transforms/transitions and show content immediately. */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    .reveal,
+    .reveal-scale,
+    .reveal-left,
+    .reveal-right {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+
+    .product-card,
+    .product-card .product-card-media img,
+    .product-card-cta,
+    .site-header {
+        transition: none !important;
+    }
+
+    .product-card:hover {
+        transform: none !important;
+    }
+
+    .product-card:hover .product-card-media img {
+        transform: none !important;
     }
 }

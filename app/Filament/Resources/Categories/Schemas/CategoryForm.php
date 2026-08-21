@@ -25,6 +25,9 @@ class CategoryForm
                     ->label('Slug (URL)')
                     ->required()
                     ->unique(ignoreRecord: true),
+                TextInput::make('group_code')
+                    ->label('Mã nhóm (theo danh mục trang thiết bị, VD: A, B, C...)')
+                    ->maxLength(2),
                 Select::make('parent_id')
                     ->label('Danh mục cha (để trống nếu là danh mục cấp 1)')
                     ->options(fn () => Category::query()->whereNull('parent_id')->pluck('name', 'id'))

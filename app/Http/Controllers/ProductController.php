@@ -33,7 +33,10 @@ class ProductController extends Controller
 
         $products = $query->orderBy('sort_order')->paginate(12)->withQueryString();
 
-        $categories = Category::active()->topLevel()->orderBy('sort_order')->get();
+        $categories = Category::active()->topLevel()
+            ->withCount(['products' => fn ($q) => $q->published()])
+            ->orderBy('sort_order')
+            ->get();
 
         return view('products.index', [
             'products' => $products,

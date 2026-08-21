@@ -1,22 +1,36 @@
 @props(['product'])
 
-<a href="{{ route('products.show', $product) }}" class="group block overflow-hidden rounded-md border border-gray-100 shadow-sm transition hover:shadow-md">
-    <div class="aspect-square bg-gray-50">
+<a href="{{ route('products.show', $product) }}" class="product-card reveal group">
+    <div class="product-card-media relative aspect-square overflow-hidden bg-navy-50">
         @if($product->images->isNotEmpty())
-            <img src="{{ $product->images->first()->url }}" alt="{{ $product->images->first()->alt_text ?? $product->name }}" class="h-full w-full object-cover">
+            <img src="{{ $product->images->first()->url }}"
+                 alt="{{ $product->images->first()->alt_text ?? $product->name }}"
+                 loading="lazy"
+                 decoding="async">
         @else
-            <div class="flex h-full w-full items-center justify-center text-gray-300">
-                <x-heroicon-o-photo class="h-12 w-12" />
+            <div class="flex h-full w-full items-center justify-center text-navy-200">
+                <x-heroicon-o-photo class="h-14 w-14" />
             </div>
         @endif
+        @if($product->category?->group_code)
+            <span class="absolute left-3 top-3 flex h-7 w-7 items-center justify-center rounded-sm bg-navy-950/80 text-xs font-extrabold text-gold-300 backdrop-blur-sm">
+                {{ $product->category->group_code }}
+            </span>
+        @endif
     </div>
-    <div class="p-4">
+    <div class="flex flex-1 flex-col p-4">
         @if($product->category)
-            <div class="text-xs font-semibold uppercase tracking-wide text-gold-600">{{ $product->category->name }}</div>
+            <div class="text-[11px] font-bold uppercase tracking-wider text-gold-600">{{ $product->category->name }}</div>
         @endif
-        <h3 class="mt-1 font-bold text-navy-900 group-hover:text-gold-600">{{ $product->name }}</h3>
-        @if($product->model_number)
-            <div class="mt-1 text-xs text-gray-400">Model: {{ $product->model_number }}</div>
+        <h3 class="mt-1.5 line-clamp-2 font-bold leading-snug text-navy-900">{{ $product->name }}</h3>
+        @if($product->short_description)
+            <p class="mt-2 line-clamp-2 text-xs leading-relaxed text-navy-500">{{ $product->short_description }}</p>
         @endif
+        <div class="mt-auto pt-4">
+            <span class="product-card-cta">
+                Xem chi tiết
+                <x-heroicon-o-arrow-right class="h-3.5 w-3.5" />
+            </span>
+        </div>
     </div>
 </a>
