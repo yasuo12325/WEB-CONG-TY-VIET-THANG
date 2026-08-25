@@ -710,4 +710,95 @@ html {
     .hero-visual__scan {
         display: none;
     }
+
+    .intro-overlay {
+        display: none !important;
+    }
+}
+
+@layer components {
+    /* ==== Landing intro splash =============================================
+       Plays once per browser session (gated by sessionStorage — see the
+       inline <script> in layouts/app.blade.php and initIntro() in app.js).
+       Pure CSS keyframes drive the whole sequence, including the exit, so
+       the overlay always disappears on its own even if JS never runs. */
+    .intro-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: radial-gradient(circle at 50% 42%, var(--color-navy-900) 0%, var(--color-navy-950) 70%);
+        pointer-events: none;
+        animation: intro-exit 0.6s ease forwards;
+        animation-delay: 1.9s;
+    }
+
+    html.no-intro .intro-overlay {
+        display: none !important;
+    }
+
+    @keyframes intro-exit {
+        to {
+            opacity: 0;
+            visibility: hidden;
+        }
+    }
+
+    .intro-ring {
+        position: absolute;
+        width: 168px;
+        height: 168px;
+        border-radius: 9999px;
+        border: 1px solid rgba(212, 165, 55, .28);
+        opacity: 0;
+        animation: intro-ring-pulse 2s cubic-bezier(.16, .84, .44, 1) forwards;
+        animation-delay: .1s;
+    }
+
+    @keyframes intro-ring-pulse {
+        0% { opacity: 0; transform: scale(.7); }
+        40% { opacity: .5; }
+        100% { opacity: 0; transform: scale(1.4); }
+    }
+
+    .intro-logo {
+        position: relative;
+        width: 92px;
+        height: 92px;
+        object-fit: contain;
+        opacity: 0;
+        transform: scale(.85);
+        animation: intro-logo-in .8s cubic-bezier(.16, .84, .44, 1) forwards;
+        animation-delay: .15s;
+        filter: drop-shadow(0 0 22px rgba(212, 165, 55, .35));
+    }
+
+    @keyframes intro-logo-in {
+        to { opacity: 1; transform: scale(1); }
+    }
+
+    .intro-tagline-block {
+        position: relative;
+        margin-top: 22px;
+        text-align: center;
+        opacity: 0;
+        transform: translateY(10px);
+        animation: intro-text-in .7s cubic-bezier(.16, .84, .44, 1) forwards;
+        animation-delay: .55s;
+    }
+
+    @keyframes intro-text-in {
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .intro-company-name {
+        @apply text-base font-extrabold uppercase tracking-[0.12em] text-white lg:text-lg;
+    }
+
+    .intro-tagline {
+        @apply mt-2 text-[10px] uppercase tracking-[0.32em] text-gold-400;
+    }
 }

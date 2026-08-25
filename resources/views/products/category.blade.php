@@ -3,7 +3,7 @@
 @php
     $title = $activeCategory->trans('name').' — '.($siteSettings['company_short_name'] ?? config('app.name'));
     $metaDescription = $activeCategory->trans('description');
-    $coverImage = $activeCategory->coverProduct?->images?->first();
+    $categoryImageUrl = $activeCategory->image_url ?? $activeCategory->coverProduct?->images?->first()?->url;
 @endphp
 
 @section('content')
@@ -20,9 +20,9 @@
 
     {{-- Category hero --}}
     <section class="relative overflow-hidden bg-navy-950 text-white">
-        @if($coverImage)
+        @if($categoryImageUrl)
             <div class="absolute inset-0">
-                <img src="{{ $coverImage->url }}" alt="" class="h-full w-full object-cover opacity-25">
+                <img src="{{ $categoryImageUrl }}" alt="" class="h-full w-full object-cover opacity-25">
                 <div class="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/85 to-navy-950/60"></div>
             </div>
         @else

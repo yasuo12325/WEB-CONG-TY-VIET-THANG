@@ -1,16 +1,16 @@
 @props(['category'])
 
 @php
-    $coverImage = $category->coverProduct?->images?->first();
+    $categoryImageUrl = $category->image_url ?? $category->coverProduct?->images?->first()?->url;
 @endphp
 
 <a href="{{ lr('products.index', ['category' => $category->slug]) }}"
    class="activity-panel reveal group"
    aria-label="{{ $category->group_code }} — {{ $category->trans('name') }}">
     <div class="activity-panel-media">
-        @if($coverImage)
-            <img src="{{ $coverImage->url }}"
-                 alt="{{ $coverImage->alt_text ?? $category->trans('name') }}"
+        @if($categoryImageUrl)
+            <img src="{{ $categoryImageUrl }}"
+                 alt="{{ $category->trans('name') }}"
                  loading="lazy"
                  decoding="async">
         @else

@@ -6,6 +6,7 @@ use App\Models\Concerns\HasTranslatedFields;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class Category extends Model
@@ -23,6 +24,7 @@ class Category extends Model
         'description',
         'description_en',
         'icon',
+        'image_path',
         'sort_order',
         'is_active',
     ];
@@ -66,5 +68,15 @@ class Category extends Model
     public function scopeTopLevel($query)
     {
         return $query->whereNull('parent_id');
+    }
+
+    /**
+     * The category's own admin-managed cover image, if one has been
+     * uploaded — takes priority over any product-photo fallback wherever
+     * a category image is rendered.
+     */
+    public function getImageUrlAttribute(): ?string
+    {
+        return $this->image_path ? Storage::disk('public')->url($this->image_path) : null;
     }
 }

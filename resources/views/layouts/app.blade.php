@@ -3,6 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        // Blocking + synchronous on purpose: must run before first paint so a
+        // repeat visit within the same browser session never flashes the
+        // intro overlay before hiding it — a class toggled from app.js
+        // (a deferred module) would run too late to prevent that flash.
+        if (sessionStorage.getItem('viettc-intro-seen')) {
+            document.documentElement.classList.add('no-intro');
+        }
+    </script>
     <title>{{ $title ?? ($siteSettings['company_short_name'] ?? config('app.name')) }}</title>
     <meta name="description" content="{{ $metaDescription ?? ($siteSettings['company_name'] ?? '') }}">
     @if(!empty($siteSettings['logo_path']))
@@ -22,6 +31,19 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="flex min-h-screen flex-col bg-white font-sans text-navy-900" x-data="{ mobileMenuOpen: false, productsOpen: false }">
+
+    {{-- Intro splash: plays once per browser session (see the inline script
+         in <head> and initIntro() in app.js), fades in the logo/tagline then
+         itself away via pure CSS keyframes — no JS required for it to
+         disappear, so it can never get stuck on-screen if a script fails. --}}
+    <div class="intro-overlay" aria-hidden="true">
+        <span class="intro-ring"></span>
+        <img src="{{ asset('images/brand/viettc-logo-intro.png') }}" alt="" class="intro-logo">
+        <div class="intro-tagline-block">
+            <div class="intro-company-name">{{ $siteSettings['company_short_name'] ?? config('app.name') }}</div>
+            <div class="intro-tagline">{{ __('nav.tagline') }}</div>
+        </div>
+    </div>
 
     <header data-site-header class="site-header">
         <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 lg:px-8">

@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Categories\Schemas;
 
 use App\Models\Category;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
@@ -18,6 +19,17 @@ class CategoryForm
     {
         return $schema
             ->components([
+                FileUpload::make('image_path')
+                    ->label('Ảnh đại diện lĩnh vực')
+                    ->helperText('Ảnh riêng cho lĩnh vực này (hiển thị ở trang chủ và trang danh mục). Nếu chưa upload, hệ thống sẽ tạm dùng ảnh của một sản phẩm trong nhóm. Nên dùng ảnh rõ nét, tỉ lệ dọc (ví dụ 3:4).')
+                    ->image()
+                    ->imageEditor()
+                    ->imageEditorAspectRatios(['3:4', '1:1', '4:3'])
+                    ->disk('public')
+                    ->directory('categories')
+                    ->maxSize(4096)
+                    ->columnSpanFull(),
+
                 Tabs::make('CategoryTranslations')
                     ->columnSpanFull()
                     ->tabs([

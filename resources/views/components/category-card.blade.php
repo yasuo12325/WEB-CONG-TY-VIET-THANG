@@ -1,14 +1,14 @@
 @props(['category', 'index' => 1])
 
 @php
-    $coverImage = $category->coverProduct?->images?->first();
+    $categoryImageUrl = $category->image_url ?? $category->coverProduct?->images?->first()?->url;
 @endphp
 
 <a href="{{ lr('products.index', ['category' => $category->slug]) }}" class="category-card reveal group">
     <div class="category-card-media">
-        @if($coverImage)
-            <img src="{{ $coverImage->url }}"
-                 alt="{{ $coverImage->alt_text ?? $category->trans('name') }}"
+        @if($categoryImageUrl)
+            <img src="{{ $categoryImageUrl }}"
+                 alt="{{ $category->trans('name') }}"
                  loading="lazy"
                  decoding="async">
         @else

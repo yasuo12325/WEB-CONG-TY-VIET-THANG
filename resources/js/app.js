@@ -111,11 +111,33 @@ function initCounters() {
     counters.forEach((el) => observer.observe(el));
 }
 
+/**
+ * Landing intro splash: the overlay's own CSS keyframes handle the whole
+ * fade-in/hold/fade-out sequence (see .intro-overlay in app.css) — this
+ * only marks the session as "seen" once that sequence has finished, so the
+ * inline script in <head> can skip it on the next page load in the same
+ * browser session. Never touches the overlay's visibility itself.
+ */
+function initIntro() {
+    const overlay = document.querySelector('.intro-overlay');
+    if (!overlay || document.documentElement.classList.contains('no-intro')) return;
+
+    window.setTimeout(() => {
+        try {
+            sessionStorage.setItem('viettc-intro-seen', '1');
+        } catch (e) {
+            // Private browsing / storage disabled — intro will just replay
+            // on the next page, which is harmless.
+        }
+    }, 2600);
+}
+
 function init() {
     initHeaderScrollState();
     initScrollReveal();
     initCounters();
     initHeroVisual();
+    initIntro();
 }
 
 // Vite emits this as a deferred module script, so DOMContentLoaded may have
