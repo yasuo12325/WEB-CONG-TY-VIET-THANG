@@ -764,9 +764,31 @@ html {
     }
 
     @keyframes intro-ring-pulse {
-        0% { opacity: 0; transform: scale(.6); }
-        35% { opacity: .55; }
-        100% { opacity: 0; transform: scale(1.55); }
+        0% { opacity: 0; transform: scale(.55); }
+        30% { opacity: .75; }
+        100% { opacity: 0; transform: scale(1.65); }
+    }
+
+    /* A quick radial burst of light timed to the logo's overshoot peak (see
+       intro-logo-in's 55% keyframe) — the "arrival" moment reads as a
+       distinct beat instead of the logo just quietly fading up to size. */
+    .intro-flash {
+        position: absolute;
+        width: 60px;
+        height: 60px;
+        border-radius: 9999px;
+        background: radial-gradient(circle, rgba(255, 255, 255, .95) 0%, rgba(227, 187, 86, .6) 38%, transparent 72%);
+        opacity: 0;
+        pointer-events: none;
+        mix-blend-mode: screen;
+        animation: intro-flash-burst .65s cubic-bezier(.16, .84, .44, 1) forwards;
+        animation-delay: .68s;
+    }
+
+    @keyframes intro-flash-burst {
+        0% { opacity: 0; transform: scale(.3); }
+        30% { opacity: 1; }
+        100% { opacity: 0; transform: scale(7); }
     }
 
     .intro-logo {
@@ -775,12 +797,11 @@ html {
         height: 132px;
         object-fit: contain;
         opacity: 0;
-        transform: translateY(26px) scale(.5) rotate(-8deg);
+        transform: translateY(38px) scale(.32) rotate(-16deg);
         animation:
-            intro-logo-in .95s cubic-bezier(.34, 1.56, .64, 1) forwards,
+            intro-logo-in 1.15s cubic-bezier(.22, 1, .36, 1) forwards,
             intro-logo-out .8s cubic-bezier(.55, 0, .85, .35) forwards;
         animation-delay: .15s, 2.95s;
-        filter: drop-shadow(0 0 28px rgba(212, 165, 55, .4));
     }
 
     @media (min-width: 1024px) {
@@ -790,8 +811,30 @@ html {
         }
     }
 
+    /* Explicit overshoot-and-settle steps (rather than leaning on the easing
+       curve alone) so the pop reads as a distinct, springy arrival: shoots
+       past full size/rotation, snaps back slightly, then settles — with the
+       glow flaring brightest right at the overshoot peak. */
     @keyframes intro-logo-in {
-        to { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
+        0% {
+            opacity: 0;
+            transform: translateY(38px) scale(.32) rotate(-16deg);
+            filter: drop-shadow(0 0 0 rgba(212, 165, 55, 0));
+        }
+        50% {
+            opacity: 1;
+            transform: translateY(-10px) scale(1.16) rotate(5deg);
+            filter: drop-shadow(0 0 52px rgba(212, 165, 55, .75));
+        }
+        75% {
+            transform: translateY(3px) scale(.96) rotate(-2deg);
+            filter: drop-shadow(0 0 30px rgba(212, 165, 55, .5));
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0) scale(1) rotate(0deg);
+            filter: drop-shadow(0 0 28px rgba(212, 165, 55, .4));
+        }
     }
 
     @keyframes intro-logo-out {

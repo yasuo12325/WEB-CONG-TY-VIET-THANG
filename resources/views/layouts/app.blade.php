@@ -39,6 +39,7 @@
     <div class="intro-overlay" aria-hidden="true">
         <span class="intro-ring"></span>
         <span class="intro-ring intro-ring--delayed"></span>
+        <span class="intro-flash"></span>
         <img src="{{ asset('images/brand/viettc-logo-intro.png') }}" alt="" class="intro-logo">
         <div class="intro-tagline-block">
             <div class="intro-company-name">{{ $siteSettings['company_short_name'] ?? config('app.name') }}</div>
