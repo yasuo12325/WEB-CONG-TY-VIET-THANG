@@ -112,24 +112,86 @@ function initCounters() {
 }
 
 /**
- * Landing intro splash: the overlay's own CSS keyframes handle the whole
- * fade-in/hold/fade-out sequence (see .intro-overlay in app.css) — this
- * only marks the session as "seen" once that sequence has finished, so the
- * inline script in <head> can skip it on the next page load in the same
- * browser session. Never touches the overlay's visibility itself.
+ * Landing intro splash. The overlay's own CSS keyframes (see .intro-overlay
+ * in app.css) always play a self-contained pop-in + fly-away-and-fade
+ * sequence with no JS involved — that's the guaranteed fallback if this
+ * script never runs, or on pages/viewports with nothing to morph into.
+ *
+ * On the homepage, at desktop/tablet width, this upgrades that exit: once
+ * the entrance settles, the intro logo is measured against the real hero
+ * logo (.hero-visual__logo-img) and smoothly translated/scaled onto it
+ * while the backdrop clears — so it visually "becomes" the logo already
+ * sitting in the hero instead of just flying off and disappearing.
  */
 function initIntro() {
     const overlay = document.querySelector('.intro-overlay');
     if (!overlay || document.documentElement.classList.contains('no-intro')) return;
 
+    const logo = overlay.querySelector('.intro-logo');
+    const heroLogo = document.querySelector('.hero-visual__logo-img');
+    const heroRect = heroLogo ? heroLogo.getBoundingClientRect() : null;
+
+    const canMorph = !prefersReducedMotion && logo && heroRect
+        && heroRect.width > 0 && window.innerWidth >= 768;
+
+    if (canMorph) {
+        window.setTimeout(() => morphIntoHeroLogo(overlay, logo, heroLogo), 1600);
+        window.setTimeout(markIntroSeen, 2900);
+    } else {
+        window.setTimeout(markIntroSeen, 4000);
+    }
+}
+
+function morphIntoHeroLogo(overlay, logo, heroLogo) {
+    const logoRect = logo.getBoundingClientRect();
+    const heroRect = heroLogo.getBoundingClientRect();
+    const scale = heroRect.width / logoRect.width;
+    const dx = (heroRect.left + heroRect.width / 2) - (logoRect.left + logoRect.width / 2);
+    const dy = (heroRect.top + heroRect.height / 2) - (logoRect.top + logoRect.height / 2);
+
+    // Freeze the logo at its already-finished pop-in state and drop the
+    // keyframe animation, so it can't fight the transition set below —
+    // matches intro-logo-in's own "to" values exactly, so there's no jump.
+    logo.style.animation = 'none';
+    logo.style.opacity = '1';
+    logo.style.transform = 'translateY(0) scale(1) rotate(0deg)';
+
+    const tagline = overlay.querySelector('.intro-tagline-block');
+    if (tagline) {
+        tagline.style.animation = 'none';
+        tagline.style.transition = 'opacity .5s ease, transform .5s ease';
+        tagline.style.opacity = '0';
+        tagline.style.transform = 'translateY(-14px)';
+    }
+
+    // Force a synchronous reflow so the browser commits the frozen state
+    // above before the transition-triggering values are applied below —
+    // otherwise both writes can coalesce into one frame and nothing
+    // animates. (Deliberately not requestAnimationFrame: it never fires in
+    // some backgrounded/non-composited contexts, silently killing the
+    // transition — a reflow read is synchronous and always works.)
+    void logo.offsetWidth;
+
+    logo.style.transition = 'transform 1.1s cubic-bezier(.65,0,.35,1), opacity .45s ease .65s';
+    logo.style.transform = `translate(${dx}px, ${dy}px) scale(${scale})`;
+    logo.style.opacity = '0';
+
     window.setTimeout(() => {
-        try {
-            sessionStorage.setItem('viettc-intro-seen', '1');
-        } catch (e) {
-            // Private browsing / storage disabled — intro will just replay
-            // on the next page, which is harmless.
-        }
-    }, 4000);
+        overlay.style.transition = 'opacity .6s ease';
+        overlay.style.opacity = '0';
+        window.setTimeout(() => {
+            overlay.style.display = 'none';
+        }, 650);
+    }, 700);
+}
+
+function markIntroSeen() {
+    try {
+        sessionStorage.setItem('viettc-intro-seen', '1');
+    } catch (e) {
+        // Private browsing / storage disabled — intro will just replay
+        // on the next page, which is harmless.
+    }
 }
 
 function init() {
