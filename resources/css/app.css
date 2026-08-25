@@ -277,7 +277,17 @@ html {
     .activity-panel {
         @apply relative block h-[320px] w-full shrink-0 overflow-hidden bg-navy-950 sm:h-[440px] sm:w-[240px] lg:h-[580px] lg:w-auto xl:h-[640px];
         scroll-snap-align: start;
-        transition: flex-grow .6s cubic-bezier(.16,.84,.44,1);
+        /* Also owns .reveal's opacity/transform transition (duration, easing
+           and --reveal-delay stagger) explicitly: both rules target the
+           `transition` shorthand at equal specificity, so without this the
+           later-declared flex-grow transition here silently wins the
+           cascade and wipes out .reveal's, making the scroll-in fade/slide
+           snap instantly instead of animating. */
+        transition:
+            flex-grow .6s cubic-bezier(.16,.84,.44,1),
+            opacity .7s cubic-bezier(.16,.84,.44,1),
+            transform .7s cubic-bezier(.16,.84,.44,1);
+        transition-delay: 0s, var(--reveal-delay, 0ms), var(--reveal-delay, 0ms);
     }
 
     .activity-panel + .activity-panel {
