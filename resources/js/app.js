@@ -129,7 +129,7 @@ function initIntro() {
             // Private browsing / storage disabled — intro will just replay
             // on the next page, which is harmless.
         }
-    }, 2600);
+    }, 4000);
 }
 
 function init() {
