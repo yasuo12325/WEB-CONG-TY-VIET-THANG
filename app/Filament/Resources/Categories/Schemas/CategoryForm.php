@@ -21,13 +21,12 @@ class CategoryForm
             ->components([
                 FileUpload::make('image_path')
                     ->label('Ảnh đại diện lĩnh vực')
-                    ->helperText('Ảnh riêng cho lĩnh vực này (hiển thị ở trang chủ và trang danh mục). Nếu chưa upload, hệ thống sẽ tạm dùng ảnh của một sản phẩm trong nhóm. Nên dùng ảnh rõ nét, tỉ lệ dọc (ví dụ 3:4).')
+                    ->helperText('Ảnh riêng cho lĩnh vực này (hiển thị ở trang chủ và trang danh mục). Nếu chưa upload, hệ thống sẽ tạm dùng ảnh của một sản phẩm trong nhóm. Chấp nhận JPG/PNG/WEBP tối đa 15MB — không bắt buộc crop, ảnh tỉ lệ nào cũng lên được.')
                     ->image()
                     ->imageEditor()
-                    ->imageEditorAspectRatios(['3:4', '1:1', '4:3'])
                     ->disk('public')
                     ->directory('categories')
-                    ->maxSize(4096)
+                    ->maxSize(15360)
                     ->columnSpanFull(),
 
                 Tabs::make('CategoryTranslations')
