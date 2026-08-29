@@ -22,6 +22,7 @@ return [
 
     'featured_kicker' => 'Highlights across all 7 equipment groups',
     'featured_title' => 'Featured Products',
+    'featured_badge' => 'Featured',
     'view_full_catalogue' => 'View the full product catalogue',
 
     'partners_kicker' => 'Working alongside leading technology brands',

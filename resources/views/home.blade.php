@@ -122,26 +122,33 @@
         </div>
     </section>
 
-    {{-- Featured products --}}
+    {{-- Featured products: dark showcase strip so PNG product shots float
+         with a glow, matching the hero/activity-panel premium-tech tone
+         instead of sitting on a plain white section. --}}
     @if($featuredProducts->isNotEmpty())
-        <section class="mx-auto max-w-7xl px-4 py-16 lg:px-8 lg:py-24">
-            <div class="reveal mx-auto max-w-2xl text-center">
-                <div class="section-kicker">{{ __('home.featured_kicker') }}</div>
-                <h2 class="section-title mt-2">{{ __('home.featured_title') }}</h2>
-                <div class="mx-auto mt-3 h-1 w-16 bg-gold-500"></div>
-            </div>
+        <section class="relative overflow-hidden bg-navy-950 py-16 text-white lg:py-24">
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(212,165,55,0.1),transparent_55%)]"></div>
+            <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:56px_56px] [mask-image:radial-gradient(ellipse_80%_60%_at_50%_0%,#000_40%,transparent_100%)]"></div>
 
-            <div class="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4" data-reveal-stagger="70">
-                @foreach($featuredProducts as $product)
-                    <x-product-card :product="$product" />
-                @endforeach
-            </div>
+            <div class="relative mx-auto max-w-7xl px-4 lg:px-8">
+                <div class="reveal mx-auto max-w-2xl text-center">
+                    <div class="section-kicker">{{ __('home.featured_kicker') }}</div>
+                    <h2 class="mt-2 text-2xl font-bold tracking-wide text-white md:text-3xl">{{ __('home.featured_title') }}</h2>
+                    <div class="mx-auto mt-3 h-1 w-16 bg-gold-500"></div>
+                </div>
 
-            <div class="mt-10 text-center">
-                <a href="{{ lr('products.index') }}" class="inline-flex items-center gap-1.5 font-semibold text-gold-600 hover:text-gold-700">
-                    {{ __('home.view_full_catalogue') }}
-                    <x-heroicon-o-arrow-right class="h-4 w-4" />
-                </a>
+                <div class="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4" data-reveal-stagger="70">
+                    @foreach($featuredProducts as $product)
+                        <x-featured-product-card :product="$product" />
+                    @endforeach
+                </div>
+
+                <div class="mt-10 text-center">
+                    <a href="{{ lr('products.index') }}" class="inline-flex items-center gap-1.5 font-semibold text-gold-400 hover:text-gold-300">
+                        {{ __('home.view_full_catalogue') }}
+                        <x-heroicon-o-arrow-right class="h-4 w-4" />
+                    </a>
+                </div>
             </div>
         </section>
     @endif

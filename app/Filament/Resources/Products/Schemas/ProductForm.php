@@ -208,9 +208,11 @@ class ProductForm
                                     ->required()
                                     ->native(false),
                                 Toggle::make('is_featured')
-                                    ->label('Sản phẩm nổi bật'),
+                                    ->label('Sản phẩm nổi bật')
+                                    ->helperText('Hiện ở khối "Sản phẩm nổi bật" trên trang chủ (tối đa 8 sản phẩm — có thể bật/tắt nhanh ngay trong danh sách sản phẩm).'),
                                 TextInput::make('sort_order')
                                     ->label('Thứ tự hiển thị')
+                                    ->helperText('Số nhỏ hơn hiển thị trước — dùng cho cả danh sách trong danh mục lẫn khối "Sản phẩm nổi bật".')
                                     ->numeric()
                                     ->default(0),
                                 DateTimePicker::make('published_at')

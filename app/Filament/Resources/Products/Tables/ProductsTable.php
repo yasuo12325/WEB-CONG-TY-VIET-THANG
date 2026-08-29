@@ -10,7 +10,9 @@ use Filament\Actions\RestoreBulkAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 
@@ -51,9 +53,9 @@ class ProductsTable
                     ->badge()
                     ->formatStateUsing(fn (string $state) => $state === 'published' ? 'Đã xuất bản' : 'Bản nháp')
                     ->color(fn (string $state) => $state === 'published' ? 'success' : 'gray'),
-                IconColumn::make('is_featured')
+                ToggleColumn::make('is_featured')
                     ->label('Nổi bật')
-                    ->boolean(),
+                    ->tooltip('Bật để hiện sản phẩm ở khối "Sản phẩm nổi bật" trên trang chủ (tối đa 8 sản phẩm, ưu tiên theo Thứ tự hiển thị).'),
                 TextColumn::make('sort_order')
                     ->label('Thứ tự')
                     ->numeric()
@@ -79,6 +81,11 @@ class ProductsTable
                 SelectFilter::make('category_id')
                     ->label('Danh mục')
                     ->relationship('category', 'name'),
+                TernaryFilter::make('is_featured')
+                    ->label('Nổi bật')
+                    ->placeholder('Tất cả sản phẩm')
+                    ->trueLabel('Chỉ sản phẩm nổi bật')
+                    ->falseLabel('Chỉ sản phẩm không nổi bật'),
                 TrashedFilter::make(),
             ])
             ->recordActions([

@@ -22,6 +22,7 @@ return [
 
     'featured_kicker' => 'Tiêu biểu từ 7 nhóm thiết bị',
     'featured_title' => 'Sản phẩm nổi bật',
+    'featured_badge' => 'Nổi bật',
     'view_full_catalogue' => 'Xem toàn bộ danh mục sản phẩm',
 
     'partners_kicker' => 'Đồng hành cùng các hãng công nghệ hàng đầu',

@@ -870,3 +870,80 @@ html {
         @apply mt-2 text-[11px] uppercase tracking-[0.34em] text-gold-400/90 lg:text-xs;
     }
 }
+
+@layer components {
+    /* ==== Homepage "Sản phẩm nổi bật": premium showcase cards ==============
+       Distinct from the shared light .product-card (used on the catalogue,
+       search and category pages) — this is a dark, glow-lit tile purpose
+       -built for the homepage highlight strip. object-fit:contain (not
+       cover) so a transparent-background product PNG floats centered with
+       breathing room, matching how tech brands (Apple, DJI, Sony...)
+       photograph hero products against a dark stage. Falls back gracefully
+       to a photo-on-white image too — it just won't get the "floating"
+       effect. */
+    .featured-card {
+        @apply relative flex h-full flex-col overflow-hidden rounded-md border border-white/10 bg-navy-900 transition-all duration-300;
+        background-image: linear-gradient(165deg, var(--color-navy-800), var(--color-navy-950) 70%);
+    }
+
+    .featured-card:hover {
+        @apply -translate-y-1.5 border-gold-400/40;
+        box-shadow: 0 28px 48px -18px rgba(0, 0, 30, .55);
+    }
+
+    .featured-card-badge {
+        @apply pointer-events-none absolute left-3 top-3 z-10 inline-flex items-center gap-1 rounded-full border border-gold-400/40 bg-navy-950/70 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-gold-300 backdrop-blur-sm;
+    }
+
+    .featured-card-media {
+        @apply relative flex aspect-square items-center justify-center overflow-hidden p-7;
+    }
+
+    .featured-card-glow {
+        @apply pointer-events-none absolute inset-0 opacity-70 transition-opacity duration-500;
+        background: radial-gradient(circle at 50% 38%, rgba(212, 165, 55, .2), transparent 62%);
+    }
+
+    .featured-card:hover .featured-card-glow {
+        @apply opacity-100;
+    }
+
+    .featured-card-media img {
+        @apply relative max-h-full max-w-full object-contain transition-transform duration-500 ease-out;
+        filter: drop-shadow(0 20px 26px rgba(0, 0, 15, .5));
+    }
+
+    .featured-card:hover .featured-card-media img {
+        transform: scale(1.06) translateY(-4px);
+    }
+
+    .featured-card-placeholder-icon {
+        @apply relative h-16 w-16 text-white/10;
+    }
+
+    .featured-card-body {
+        @apply flex flex-1 flex-col border-t border-white/[.06] p-5 pt-4;
+    }
+
+    .featured-card-category {
+        @apply text-[11px] font-bold uppercase tracking-wider text-white/40;
+    }
+
+    .featured-card-name {
+        @apply mt-1.5 line-clamp-2 text-[15px] font-bold leading-snug text-white;
+    }
+
+    .featured-card-desc {
+        @apply mt-2 line-clamp-2 text-xs leading-relaxed text-white/55;
+    }
+
+    .featured-card-cta {
+        @apply mt-auto inline-flex items-center gap-1.5 pt-4 text-xs font-bold uppercase tracking-wide text-gold-400 opacity-0 transition-all duration-300;
+        transform: translateX(-6px);
+    }
+
+    .featured-card:hover .featured-card-cta {
+        @apply opacity-100;
+        transform: translateX(0);
+    }
+}
