@@ -135,10 +135,10 @@ function initIntro() {
         && heroRect.width > 0 && window.innerWidth >= 768;
 
     if (canMorph) {
-        window.setTimeout(() => morphIntoHeroLogo(overlay, logo, heroLogo), 1600);
-        window.setTimeout(markIntroSeen, 2900);
+        window.setTimeout(() => morphIntoHeroLogo(overlay, logo, heroLogo), 2500);
+        window.setTimeout(markIntroSeen, 4300);
     } else {
-        window.setTimeout(markIntroSeen, 4000);
+        window.setTimeout(markIntroSeen, 4300);
     }
 }
 
@@ -151,17 +151,27 @@ function morphIntoHeroLogo(overlay, logo, heroLogo) {
 
     // Freeze the logo at its already-finished pop-in state and drop the
     // keyframe animation, so it can't fight the transition set below —
-    // matches intro-logo-in's own "to" values exactly, so there's no jump.
+    // matches intro-logo-in's own "to" values exactly (including the
+    // resting glow, since the un-animated base rule has its own blurred
+    // pre-entrance filter that would otherwise flash back in).
     logo.style.animation = 'none';
     logo.style.opacity = '1';
-    logo.style.transform = 'translateY(0) scale(1) rotate(0deg)';
+    logo.style.transform = 'scale(1)';
+    logo.style.filter = 'blur(0) drop-shadow(0 0 24px rgba(212,165,55,.32))';
+
+    const divider = overlay.querySelector('.intro-divider');
+    if (divider) {
+        divider.style.animation = 'none';
+        divider.style.transition = 'opacity .4s ease';
+        divider.style.opacity = '0';
+    }
 
     const tagline = overlay.querySelector('.intro-tagline-block');
     if (tagline) {
         tagline.style.animation = 'none';
         tagline.style.transition = 'opacity .5s ease, transform .5s ease';
         tagline.style.opacity = '0';
-        tagline.style.transform = 'translateY(-14px)';
+        tagline.style.transform = 'translateY(-8px)';
     }
 
     // Force a synchronous reflow so the browser commits the frozen state
