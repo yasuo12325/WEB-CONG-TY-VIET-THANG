@@ -62,6 +62,9 @@ class ManageSettings extends Page implements HasForms
             'hero_subheadline_en' => Setting::get('hero_subheadline_en'),
             'about_summary' => Setting::get('about_summary'),
             'about_summary_en' => Setting::get('about_summary_en'),
+            'about_image_path' => Setting::get('about_image_path'),
+            'about_content' => Setting::get('about_content'),
+            'about_content_en' => Setting::get('about_content_en'),
         ]);
     }
 
@@ -114,6 +117,26 @@ class ManageSettings extends Page implements HasForms
                         TextInput::make('hero_headline_en')->label('Hero headline (EN)'),
                         Textarea::make('hero_subheadline_en')->label('Hero subheadline (EN)'),
                         Textarea::make('about_summary_en')->label('About summary (EN)'),
+                    ]),
+                Section::make('Trang "Giới thiệu công ty"')
+                    ->description('Ảnh và nội dung hiển thị tại trang /gioi-thieu (phía trên phần địa chỉ trụ sở).')
+                    ->columns(1)
+                    ->schema([
+                        FileUpload::make('about_image_path')
+                            ->label('Ảnh giới thiệu công ty')
+                            ->helperText('Hiển thị ở đầu trang "Giới thiệu công ty" (ảnh trụ sở, đội ngũ hoặc sản phẩm tiêu biểu). Dùng chung cho cả 2 ngôn ngữ.')
+                            ->image()
+                            ->imageEditor()
+                            ->disk('public')
+                            ->directory('settings/about')
+                            ->maxSize(15360),
+                        Textarea::make('about_content')
+                            ->label('Nội dung giới thiệu — 🇻🇳 Tiếng Việt')
+                            ->helperText('Dán toàn bộ đoạn giới thiệu công ty. Xuống dòng sẽ tự động xuống dòng trên trang.')
+                            ->rows(14),
+                        Textarea::make('about_content_en')
+                            ->label('Nội dung giới thiệu — 🇬🇧 English')
+                            ->rows(14),
                     ]),
             ])
             ->statePath('data');

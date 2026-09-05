@@ -47,6 +47,8 @@ class PageController extends Controller
             'headquarters_address' => Setting::get('headquarters_address'),
             'office_address' => Setting::get('office_address'),
             'about_summary' => Setting::get('about_summary'),
+            'about_image_path' => Setting::get('about_image_path'),
+            'about_content' => Setting::getTrans('about_content'),
         ];
     }
 }

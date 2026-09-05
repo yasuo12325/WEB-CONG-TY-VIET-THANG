@@ -28,28 +28,19 @@
             </div>
         </div>
 
+        @if(!empty($settings['about_image_path']))
+            <div class="mt-10 overflow-hidden rounded-md">
+                <img src="{{ Illuminate\Support\Facades\Storage::disk('public')->url($settings['about_image_path']) }}"
+                     alt="{{ $settings['company_short_name'] }}"
+                     class="h-auto max-h-[480px] w-full object-cover">
+            </div>
+        @endif
+
+        @if(!empty($settings['about_content']))
+            <div class="prose mt-10 max-w-none whitespace-pre-line text-gray-700">{{ $settings['about_content'] }}</div>
+        @endif
+
         <div class="prose mt-10 max-w-none text-gray-700">
-            <h2>{{ __('pages.about_history_heading') }}</h2>
-            <p>
-                {{ __('pages.about_history_p1', [
-                    'company_name' => $settings['company_name'],
-                    'company_intl' => $settings['company_name_intl'],
-                    'company_short' => $settings['company_short_name'],
-                ]) }}
-            </p>
-            <p>{{ __('pages.about_history_p2') }}</p>
-            <p>{{ __('pages.about_history_p3') }}</p>
-
-            <h2>{{ __('pages.about_structure_heading') }}</h2>
-            <p>{{ __('pages.about_structure_intro', ['company_short' => $settings['company_short_name']]) }}</p>
-            <ul>
-                <li><strong>{{ __('pages.about_dept_1_name') }}</strong> — {{ __('pages.about_dept_1_desc') }}</li>
-                <li><strong>{{ __('pages.about_dept_2_name') }}</strong> — {{ __('pages.about_dept_2_desc') }}</li>
-                <li><strong>{{ __('pages.about_dept_3_name') }}</strong> — {{ __('pages.about_dept_3_desc') }}</li>
-                <li><strong>{{ __('pages.about_dept_4_name') }}</strong> — {{ __('pages.about_dept_4_desc') }}</li>
-                <li><strong>{{ __('pages.about_dept_5_name') }}</strong> — {{ __('pages.about_dept_5_desc') }}</li>
-            </ul>
-
             <h2>{{ __('pages.about_offices_heading') }}</h2>
             <p><strong>{{ __('pages.about_hq_label') }}</strong> {{ $settings['headquarters_address'] }}</p>
             <p><strong>{{ __('pages.about_office_label') }}</strong> {{ $settings['office_address'] }}</p>
