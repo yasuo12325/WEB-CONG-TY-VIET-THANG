@@ -19,12 +19,6 @@ return [
 
     // Technology page
     'technology_title' => 'Công nghệ & Chuyển giao công nghệ',
-    'technology_intro' => 'Bên cạnh việc nhập khẩu và phân phối các thiết bị An ninh - Quốc phòng đặc chủng, :company còn phối hợp với các viện nghiên cứu, đơn vị nghiệp vụ và nhà sản xuất uy tín trong và ngoài nước để thực hiện tư vấn, chuyển giao công nghệ và tự sản xuất một số trang thiết bị nghiệp vụ đặc biệt.',
-    'technology_lines_heading' => 'Công nghệ và dây chuyền sản xuất',
-    'technology_line_1' => 'Công nghệ và dây chuyền sản xuất các trang thiết bị nghiệp vụ đặc biệt phục vụ an ninh - quốc phòng.',
-    'technology_line_2' => 'Công nghệ lắp ráp Camera CCTV giám sát.',
-    'technology_team_heading' => 'Đội ngũ kỹ thuật',
-    'technology_team_body' => 'Đội ngũ chuyên gia được đào tạo bài bản trong và ngoài nước, có văn bằng, chứng chỉ do các nhà sản xuất cấp — đảm bảo năng lực tư vấn kỹ thuật, tích hợp hệ thống, lắp đặt, bảo hành và bảo trì tốt nhất, kịp thời nhất cho khách hàng.',
 
     // Partners page
     'partners_title' => 'Đối tác & Nhà sản xuất',

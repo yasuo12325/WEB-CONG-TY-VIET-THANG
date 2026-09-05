@@ -6,6 +6,7 @@ use App\Models\Setting;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -65,6 +66,8 @@ class ManageSettings extends Page implements HasForms
             'about_image_path' => Setting::get('about_image_path'),
             'about_content' => Setting::get('about_content'),
             'about_content_en' => Setting::get('about_content_en'),
+            'technology_content' => Setting::get('technology_content'),
+            'technology_content_en' => Setting::get('technology_content_en'),
         ]);
     }
 
@@ -137,6 +140,21 @@ class ManageSettings extends Page implements HasForms
                         Textarea::make('about_content_en')
                             ->label('Nội dung giới thiệu — 🇬🇧 English')
                             ->rows(14),
+                    ]),
+                Section::make('Trang "Công nghệ"')
+                    ->description('Nội dung hiển thị tại trang /cong-nghe. Có thể vừa gõ chữ vừa chèn ảnh ngay trong cùng một ô, giống soạn thảo văn bản thông thường.')
+                    ->columns(1)
+                    ->schema([
+                        RichEditor::make('technology_content')
+                            ->label('Nội dung — 🇻🇳 Tiếng Việt')
+                            ->fileAttachmentsDisk('public')
+                            ->fileAttachmentsDirectory('settings/technology')
+                            ->columnSpanFull(),
+                        RichEditor::make('technology_content_en')
+                            ->label('Nội dung — 🇬🇧 English')
+                            ->fileAttachmentsDisk('public')
+                            ->fileAttachmentsDirectory('settings/technology')
+                            ->columnSpanFull(),
                     ]),
             ])
             ->statePath('data');

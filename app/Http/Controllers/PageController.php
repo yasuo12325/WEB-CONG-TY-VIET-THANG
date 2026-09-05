@@ -24,7 +24,9 @@ class PageController extends Controller
 
     public function technology()
     {
-        return view('pages.technology');
+        return view('pages.technology', [
+            'content' => Setting::getTrans('technology_content'),
+        ]);
     }
 
     public function partners()
