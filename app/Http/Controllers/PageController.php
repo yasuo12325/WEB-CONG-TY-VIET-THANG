@@ -28,7 +28,7 @@ class PageController extends Controller
     public function technology()
     {
         return view('pages.technology', [
-            'content' => Setting::getTrans('technology_content'),
+            'tech' => $this->parseTechnologyContent(Setting::getTrans('technology_content')),
         ]);
     }
 
@@ -110,6 +110,109 @@ class PageController extends Controller
         }
 
         return ['title' => $title, 'intro' => $intro, 'sections' => $sections];
+    }
+
+    /**
+     * technology_content is a Filament RichEditor field (real HTML with
+     * <h2>/<h3> headings, <ul> lists, an embedded <img>, and — if the admin
+     * used the quote tool — a closing <blockquote>), unlike about_content's
+     * plain textarea. So this walks the actual DOM instead of guessing at
+     * plain-text heading shapes: the first <img> found becomes the hero
+     * image, content before the first heading is the intro, each heading
+     * starts a new section carrying the HTML that follows it, and a
+     * <blockquote> (wherever it appears) becomes the highlighted closing
+     * statement. Empty spacer <p></p> nodes (which the editor leaves
+     * behind around an inserted image) are skipped. Falls back to
+     * rendering everything as intro if there are no headings at all.
+     */
+    private function parseTechnologyContent(?string $html): array
+    {
+        $empty = ['image' => null, 'intro' => '', 'sections' => [], 'closing' => null];
+
+        if (blank($html)) {
+            return $empty;
+        }
+
+        $dom = new \DOMDocument();
+        libxml_use_internal_errors(true);
+        $dom->loadHTML('<?xml encoding="utf-8"?><div>'.$html.'</div>', LIBXML_NOERROR | LIBXML_NOWARNING);
+        libxml_clear_errors();
+
+        $root = $dom->getElementsByTagName('div')->item(0);
+
+        if (! $root) {
+            return $empty;
+        }
+
+        $image = null;
+        $introHtml = '';
+        $sections = [];
+        $current = null;
+        $closingHtml = null;
+
+        foreach ($root->childNodes as $node) {
+            if ($node->nodeType !== XML_ELEMENT_NODE) {
+                continue;
+            }
+
+            if ($image === null) {
+                $imgNodes = $node->getElementsByTagName('img');
+
+                if ($imgNodes->length > 0) {
+                    $image = $imgNodes->item(0)->getAttribute('src');
+
+                    if (trim($node->textContent) === '') {
+                        continue; // node exists only to hold the image
+                    }
+                }
+            }
+
+            if (trim($node->textContent) === '') {
+                continue; // empty <p></p> spacer left by the editor
+            }
+
+            $tag = strtolower($node->nodeName);
+
+            if (in_array($tag, ['h1', 'h2', 'h3', 'h4'], true)) {
+                if ($current) {
+                    $sections[] = $current;
+                }
+                $current = ['heading' => trim($node->textContent), 'body' => ''];
+
+                continue;
+            }
+
+            if ($tag === 'blockquote') {
+                $closingHtml = $this->innerHtml($node);
+
+                continue;
+            }
+
+            $nodeHtml = $dom->saveHTML($node);
+
+            if ($current) {
+                $current['body'] .= $nodeHtml;
+            } else {
+                $introHtml .= $nodeHtml;
+            }
+        }
+
+        if ($current) {
+            $sections[] = $current;
+        }
+
+        return ['image' => $image, 'intro' => $introHtml, 'sections' => $sections, 'closing' => $closingHtml];
+    }
+
+    private function innerHtml(\DOMNode $node): string
+    {
+        $html = '';
+
+        foreach ($node->childNodes as $child) {
+            $html .= $node->ownerDocument->saveHTML($child);
+        }
+
+        return $html;
     }
 
     private function companySettings(): array

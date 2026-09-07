@@ -947,3 +947,68 @@ html {
         transform: translateX(0);
     }
 }
+
+@layer components {
+    /* ---- Lightweight typography for admin-authored rich text ------------
+       .prose already appears across the site (product/news/project bodies,
+       page content) but had no matching CSS at all — no Tailwind Typography
+       plugin, no custom rule — so that content rendered with raw browser
+       defaults. This gives it real, minimal styling. .prose-invert is the
+       dark-background counterpart, used on navy sections. */
+    .prose {
+        @apply text-[15px] leading-relaxed text-navy-600;
+    }
+
+    .prose > * + * {
+        @apply mt-4;
+    }
+
+    .prose h1, .prose h2, .prose h3, .prose h4 {
+        @apply mb-3 mt-8 font-extrabold leading-snug text-navy-900;
+    }
+
+    .prose h1 { @apply text-2xl; }
+    .prose h2 { @apply text-xl; }
+    .prose h3 { @apply text-lg; }
+
+    .prose strong {
+        @apply font-semibold text-navy-900;
+    }
+
+    .prose a {
+        @apply text-gold-600 underline underline-offset-2 transition hover:text-gold-700;
+    }
+
+    .prose ul {
+        @apply list-disc space-y-2 pl-5;
+    }
+
+    .prose ol {
+        @apply list-decimal space-y-2 pl-5;
+    }
+
+    .prose li > p {
+        @apply my-0;
+    }
+
+    .prose img {
+        @apply my-6 rounded-md;
+    }
+
+    .prose blockquote {
+        @apply border-l-4 border-gold-500 pl-4 italic text-navy-500;
+    }
+
+    .prose-invert {
+        @apply text-white/70;
+    }
+
+    .prose-invert h1, .prose-invert h2, .prose-invert h3, .prose-invert h4,
+    .prose-invert strong {
+        @apply text-white;
+    }
+
+    .prose-invert a {
+        @apply text-gold-400 hover:text-gold-300;
+    }
+}
