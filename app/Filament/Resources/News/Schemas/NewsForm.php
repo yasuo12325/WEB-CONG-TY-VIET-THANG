@@ -40,6 +40,8 @@ class NewsForm
                                     ->columnSpanFull(),
                                 RichEditor::make('body')
                                     ->label('Nội dung')
+                                    ->fileAttachmentsDisk('public')
+                                    ->fileAttachmentsDirectory('news')
                                     ->columnSpanFull(),
                             ]),
                         Tab::make('🇬🇧 English')
@@ -60,6 +62,8 @@ class NewsForm
                                     ->columnSpanFull(),
                                 RichEditor::make('body_en')
                                     ->label('Body (EN)')
+                                    ->fileAttachmentsDisk('public')
+                                    ->fileAttachmentsDirectory('news')
                                     ->columnSpanFull(),
                             ]),
                     ]),
