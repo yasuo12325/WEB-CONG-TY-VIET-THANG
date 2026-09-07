@@ -31,7 +31,7 @@
                         <div class="overflow-hidden rounded-md shadow-2xl shadow-black/40">
                             <img src="{{ $tech['image'] }}"
                                  alt="{{ __('pages.technology_title') }}"
-                                 class="aspect-[4/3] h-full w-full object-cover">
+                                 class="h-auto w-full object-contain">
                         </div>
                     </div>
                 @endif
