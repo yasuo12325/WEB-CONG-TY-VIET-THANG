@@ -47,16 +47,11 @@
 
     {{-- Stats strip --}}
     <section class="border-b border-navy-100 bg-white py-10 lg:py-12">
-        <div class="mx-auto grid max-w-7xl grid-cols-2 gap-8 px-4 sm:grid-cols-4 lg:px-8" data-reveal-stagger="80">
+        <div class="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-4 sm:grid-cols-3 lg:px-8" data-reveal-stagger="80">
             <div class="reveal flex flex-col items-center text-center">
                 <x-heroicon-o-calendar-days class="h-7 w-7 text-gold-500" />
                 <div class="mt-3 text-xl font-extrabold text-navy-900">{{ $settings['founded_year'] }}</div>
                 <div class="mt-1 text-xs uppercase tracking-wider text-navy-400">{{ __('pages.about_stat_founded') }}</div>
-            </div>
-            <div class="reveal flex flex-col items-center text-center">
-                <x-heroicon-o-banknotes class="h-7 w-7 text-gold-500" />
-                <div class="mt-3 text-xl font-extrabold text-navy-900">{{ $settings['charter_capital'] }}</div>
-                <div class="mt-1 text-xs uppercase tracking-wider text-navy-400">{{ __('pages.about_stat_capital') }}</div>
             </div>
             <div class="reveal flex flex-col items-center text-center">
                 <x-heroicon-o-user-group class="h-7 w-7 text-gold-500" />
