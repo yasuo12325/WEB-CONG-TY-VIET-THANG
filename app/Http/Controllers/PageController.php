@@ -10,8 +10,11 @@ class PageController extends Controller
 {
     public function about()
     {
+        $settings = $this->companySettings();
+
         return view('pages.about', [
-            'settings' => $this->companySettings(),
+            'settings' => $settings,
+            'about' => $this->parseAboutContent($settings['about_content']),
         ]);
     }
 
@@ -34,6 +37,79 @@ class PageController extends Controller
         return view('pages.partners', [
             'partners' => Partner::active()->get(),
         ]);
+    }
+
+    /**
+     * about_content is a single free-form textarea (admin pastes one long
+     * passage — see ManageSettings), not structured fields. This splits it
+     * on blank lines into blocks, then treats a short one-line block with
+     * no trailing sentence punctuation (or one that's fully upper-case) as
+     * a section heading, so the "Giới thiệu công ty" page can render it as
+     * a hero + alternating sections instead of one flat wall of text —
+     * entirely from whatever the admin already typed, nothing invented.
+     * Falls back gracefully (everything becomes "intro") for content that
+     * doesn't follow this convention at all.
+     */
+    private function parseAboutContent(?string $content): array
+    {
+        $empty = ['title' => null, 'intro' => [], 'sections' => []];
+
+        if (blank($content)) {
+            return $empty;
+        }
+
+        $blocks = collect(preg_split('/\n{2,}/', trim($content)))
+            ->map(fn ($block) => trim($block))
+            ->filter()
+            ->values();
+
+        if ($blocks->isEmpty()) {
+            return $empty;
+        }
+
+        $isAllCaps = fn (string $s): bool => mb_strtoupper($s, 'UTF-8') === $s && preg_match('/\p{L}/u', $s) === 1;
+
+        $isHeading = function (string $block) use ($isAllCaps): bool {
+            if (str_contains($block, "\n") || mb_strlen($block) > 100) {
+                return false;
+            }
+
+            return $isAllCaps($block) || ! preg_match('/[.!?…]"?$/u', $block);
+        };
+
+        $title = null;
+        $intro = [];
+        $sections = [];
+        $current = null;
+
+        foreach ($blocks as $index => $block) {
+            if ($index === 0 && $isAllCaps($block) && mb_strlen($block) > 10) {
+                $title = $block;
+
+                continue;
+            }
+
+            if ($isHeading($block)) {
+                if ($current) {
+                    $sections[] = $current;
+                }
+                $current = ['heading' => $block, 'paragraphs' => []];
+
+                continue;
+            }
+
+            if ($current) {
+                $current['paragraphs'][] = $block;
+            } else {
+                $intro[] = $block;
+            }
+        }
+
+        if ($current) {
+            $sections[] = $current;
+        }
+
+        return ['title' => $title, 'intro' => $intro, 'sections' => $sections];
     }
 
     private function companySettings(): array
