@@ -106,13 +106,4 @@
             </div>
         </section>
     @endforeach
-
-    {{-- Offices --}}
-    <section class="bg-white py-14 lg:py-20">
-        <div class="prose reveal mx-auto max-w-4xl px-4 lg:px-8">
-            <h2>{{ __('pages.about_offices_heading') }}</h2>
-            <p><strong>{{ __('pages.about_hq_label') }}</strong> {{ $settings['headquarters_address'] }}</p>
-            <p><strong>{{ __('pages.about_office_label') }}</strong> {{ $settings['office_address'] }}</p>
-        </div>
-    </section>
 @endsection

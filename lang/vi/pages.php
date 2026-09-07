@@ -13,10 +13,6 @@ return [
     'about_stat_staff_unit' => 'người',
     'about_stat_ceo' => 'Tổng Giám đốc',
 
-    'about_offices_heading' => 'Trụ sở & văn phòng giao dịch',
-    'about_hq_label' => 'Trụ sở chính:',
-    'about_office_label' => 'Văn phòng giao dịch:',
-
     // Technology page
     'technology_title' => 'Công nghệ & Chuyển giao công nghệ',
 

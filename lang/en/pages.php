@@ -13,10 +13,6 @@ return [
     'about_stat_staff_unit' => 'people',
     'about_stat_ceo' => 'General Director',
 
-    'about_offices_heading' => 'Headquarters & Offices',
-    'about_hq_label' => 'Headquarters:',
-    'about_office_label' => 'Business Office:',
-
     // Technology page
     'technology_title' => 'Technology & Technology Transfer',
 

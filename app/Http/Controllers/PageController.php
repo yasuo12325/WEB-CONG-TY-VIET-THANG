@@ -122,8 +122,6 @@ class PageController extends Controller
             'charter_capital' => Setting::get('charter_capital'),
             'employee_count' => Setting::get('employee_count'),
             'ceo_name' => Setting::get('ceo_name'),
-            'headquarters_address' => Setting::get('headquarters_address'),
-            'office_address' => Setting::get('office_address'),
             'about_summary' => Setting::get('about_summary'),
             'about_image_path' => Setting::get('about_image_path'),
             'about_content' => Setting::getTrans('about_content'),
