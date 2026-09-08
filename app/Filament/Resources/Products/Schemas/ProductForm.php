@@ -56,9 +56,9 @@ class ProductForm
                                                     ->required()
                                                     ->unique(ignoreRecord: true)
                                                     ->columnSpan(1),
-                                                TextInput::make('short_description')
+                                                Textarea::make('short_description')
                                                     ->label('Mô tả ngắn')
-                                                    ->maxLength(255)
+                                                    ->rows(3)
                                                     ->columnSpanFull(),
                                                 RichEditor::make('description')
                                                     ->label('Mô tả chi tiết')
@@ -79,9 +79,9 @@ class ProductForm
                                                     ->unique(ignoreRecord: true)
                                                     ->helperText('Để trống sẽ tự tạo từ Product name (EN).')
                                                     ->columnSpan(1),
-                                                TextInput::make('short_description_en')
+                                                Textarea::make('short_description_en')
                                                     ->label('Short description (EN)')
-                                                    ->maxLength(255)
+                                                    ->rows(3)
                                                     ->columnSpanFull(),
                                                 RichEditor::make('description_en')
                                                     ->label('Full description (EN)')
