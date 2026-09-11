@@ -62,7 +62,6 @@
 
             <nav class="hidden items-center gap-1 text-sm font-semibold text-white/80 lg:flex">
                 <a href="{{ lr('about') }}" class="rounded-sm px-3 py-2 transition hover:text-gold-400 {{ lr_is('about') ? 'text-gold-400' : '' }}">{{ __('nav.about') }}</a>
-                <a href="{{ lr('fields') }}" class="rounded-sm px-3 py-2 transition hover:text-gold-400 {{ lr_is('fields') ? 'text-gold-400' : '' }}">{{ __('nav.fields') }}</a>
 
                 <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
                     <a href="{{ lr('products.index') }}"
@@ -131,7 +130,6 @@
                 </div>
 
                 <a href="{{ lr('about') }}" class="rounded-sm px-2 py-2.5 hover:bg-white/5 hover:text-gold-400">{{ __('nav.about') }}</a>
-                <a href="{{ lr('fields') }}" class="rounded-sm px-2 py-2.5 hover:bg-white/5 hover:text-gold-400">{{ __('nav.fields') }}</a>
 
                 <button @click="productsOpen = !productsOpen" class="flex items-center justify-between rounded-sm px-2 py-2.5 text-left hover:bg-white/5 hover:text-gold-400">
                     {{ __('nav.products') }}
