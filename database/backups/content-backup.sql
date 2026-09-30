@@ -132,6 +132,52 @@ INSERT INTO `partners` VALUES (1,'FARO','partners/logos/01M0KNQQEBXX45SXQDMS967J
 UNLOCK TABLES;
 
 --
+-- Table structure for table `job_postings`
+--
+
+DROP TABLE IF EXISTS `job_postings`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `job_postings` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `title_en` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `slug` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slug_en` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `location` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `location_en` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `excerpt` text COLLATE utf8mb4_unicode_ci,
+  `excerpt_en` text COLLATE utf8mb4_unicode_ci,
+  `body` longtext COLLATE utf8mb4_unicode_ci,
+  `body_en` longtext COLLATE utf8mb4_unicode_ci,
+  `deadline` date DEFAULT NULL,
+  `cover_image_path` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'draft',
+  `published_at` timestamp NULL DEFAULT NULL,
+  `author_id` bigint unsigned DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `job_postings_slug_unique` (`slug`),
+  UNIQUE KEY `job_postings_slug_en_unique` (`slug_en`),
+  KEY `job_postings_author_id_foreign` (`author_id`),
+  KEY `job_postings_status_published_at_index` (`status`,`published_at`),
+  CONSTRAINT `job_postings_author_id_foreign` FOREIGN KEY (`author_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `job_postings`
+--
+
+LOCK TABLES `job_postings` WRITE;
+/*!40000 ALTER TABLE `job_postings` DISABLE KEYS */;
+INSERT INTO `job_postings` VALUES (2,'Kế toán xuất nhập khẩu',NULL,'ke-toan-xuat-nhap-khau',NULL,'Hà Nội',NULL,'📌 TUYỂN DỤNG – KẾ TOÁN XUẤT NHẬP KHẨU\n\nCông ty Cổ phần Thiết bị Công nghiệp & Chuyển giao Công nghệ VIỆT THẮNG tuyển dụng Kế toán Xuất nhập khẩu.\n\nCông việc chính:\n\nTheo dõi, kiểm tra và hạch toán các nghiệp vụ xuất nhập khẩu.\nKiểm tra hợp đồng, invoice, packing list, vận đơn, tờ khai hải quan và chứng từ liên quan.\nTheo dõi công nợ, chi phí nhập khẩu và đối chiếu số liệu.\nPhối hợp với đơn vị forwarder, hải quan, ngân hàng và các bộ phận liên quan.\nLưu trữ, quản lý chứng từ và lập báo cáo theo yêu cầu.\n\nYêu cầu:\n\nTốt nghiệp Cao đẳng/Đại học chuyên ngành Kế toán, Tài chính, Xuất nhập khẩu hoặc liên quan.\nCó kinh nghiệm kế toán xuất nhập khẩu là lợi thế.\nNắm được các loại chứng từ và quy trình XNK.\nSử dụng tốt Excel và phần mềm kế toán.\nCẩn thận, trách nhiệm, giao tiếp và phối hợp công việc tốt.\nTiếng Anh đọc hiểu chứng từ.\n\nQuyền lợi:\n\nLương thỏa thuận theo năng lực.\nMôi trường làm việc chuyên nghiệp, ổn định.\nĐược tiếp xúc với các dự án và hoạt động nhập khẩu thiết bị công nghệ, công nghiệp và an ninh – an toàn.\nĐầy đủ chế độ BHXH và quyền lợi theo quy định.\n\n📍 Địa điểm: Hà Nội\n⏰ Thời gian: Full-time\n📩 Ứng tuyển: Gửi CV về infor@vietthang.vn',NULL,'<h3>📌 TUYỂN DỤNG – KẾ TOÁN XUẤT NHẬP KHẨU</h3><p><strong>Công ty Cổ phần Thiết bị Công nghiệp &amp; Chuyển giao Công nghệ VIỆT THẮNG</strong> tuyển dụng <strong>Kế toán Xuất nhập khẩu</strong>.</p><p><strong>Công việc chính:</strong></p><ul><li><p>Theo dõi, kiểm tra và hạch toán các nghiệp vụ <strong>xuất nhập khẩu</strong>.</p></li><li><p>Kiểm tra <strong>hợp đồng, invoice, packing list, vận đơn, tờ khai hải quan</strong> và chứng từ liên quan.</p></li><li><p>Theo dõi công nợ, chi phí nhập khẩu và đối chiếu số liệu.</p></li><li><p>Phối hợp với đơn vị <strong>forwarder, hải quan, ngân hàng và các bộ phận liên quan</strong>.</p></li><li><p>Lưu trữ, quản lý chứng từ và lập báo cáo theo yêu cầu.</p></li></ul><p><strong>Yêu cầu:</strong></p><ul><li><p>Tốt nghiệp <strong>Cao đẳng/Đại học</strong> chuyên ngành Kế toán, Tài chính, Xuất nhập khẩu hoặc liên quan.</p></li><li><p>Có kinh nghiệm kế toán xuất nhập khẩu là lợi thế.</p></li><li><p>Nắm được các loại <strong>chứng từ và quy trình XNK</strong>.</p></li><li><p>Sử dụng tốt <strong>Excel</strong> và phần mềm kế toán.</p></li><li><p>Cẩn thận, trách nhiệm, giao tiếp và phối hợp công việc tốt.</p></li><li><p><strong>Tiếng Anh đọc hiểu chứng từ</strong>.</p></li></ul><p><strong>Quyền lợi:</strong></p><ul><li><p>Lương <strong>thỏa thuận theo năng lực</strong>.</p></li><li><p>Môi trường làm việc chuyên nghiệp, ổn định.</p></li><li><p>Được tiếp xúc với các dự án và hoạt động <strong>nhập khẩu thiết bị công nghệ, công nghiệp và an ninh – an toàn</strong>.</p></li><li><p>Đầy đủ chế độ BHXH và quyền lợi theo quy định.</p></li></ul><p><strong>📍 Địa điểm:</strong> Hà Nội<br><strong>⏰ Thời gian:</strong> Full-time<br><strong>📩 Ứng tuyển:</strong> Gửi CV về infor@vietthang.vn</p>','<p></p>',NULL,'jobs/01M3R5T7QDGSK9BWB7BN0KE6JS.png','published','2026-09-29 20:30:29',1,'2026-09-29 20:30:29','2026-09-29 20:30:29',NULL);
+/*!40000 ALTER TABLE `job_postings` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `product_documents`
 --
 
@@ -364,4 +410,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-09-09 13:25:24
+-- Dump completed on 2026-09-30 13:46:33
