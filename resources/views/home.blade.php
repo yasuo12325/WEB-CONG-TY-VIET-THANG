@@ -153,6 +153,44 @@
         </section>
     @endif
 
+    {{-- Featured partners: the handful of brands VIETTC., JSC holds
+         exclusive-representative status with, called out on their own
+         (larger cards + explicit badge) before the full partner logo grid
+         below, so their standing isn't lost among 20+ equal-sized logos. --}}
+    @if($featuredPartners->isNotEmpty())
+        <section class="border-t border-navy-100 bg-white py-16 lg:py-24">
+            <div class="mx-auto max-w-7xl px-4 lg:px-8">
+                <div class="reveal mx-auto max-w-2xl text-center">
+                    <div class="section-kicker">{{ __('home.featured_partners_kicker') }}</div>
+                    <h2 class="section-title mt-2">{{ __('home.featured_partners_title') }}</h2>
+                    <div class="mx-auto mt-3 h-1 w-16 bg-gold-500"></div>
+                </div>
+
+                <div class="mt-12 grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4" data-reveal-stagger="60">
+                    @foreach($featuredPartners as $partner)
+                        <div class="reveal-scale group flex flex-col items-center rounded-md border border-navy-100 bg-white p-6 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-gold-300 hover:shadow-lg">
+                            <div class="flex h-16 w-full items-center justify-center">
+                                @if($partner->logo_path)
+                                    <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($partner->logo_path) }}" alt="{{ $partner->name }}" class="max-h-16 max-w-full object-contain">
+                                @else
+                                    <span class="text-lg font-bold text-navy-800">{{ $partner->name }}</span>
+                                @endif
+                            </div>
+                            <div class="mt-4 text-sm font-bold text-navy-900">{{ $partner->name }}</div>
+                            @if($partner->trans('specialty'))
+                                <div class="mt-1 text-xs text-navy-400">{{ $partner->trans('specialty') }}</div>
+                            @endif
+                            <span class="mt-3 inline-flex items-center gap-1 rounded-full bg-navy-900 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-gold-400">
+                                <x-heroicon-o-shield-check class="h-3.5 w-3.5" />
+                                {{ __('home.featured_partners_badge') }}
+                            </span>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    @endif
+
     {{-- Partners --}}
     <section class="border-t border-navy-100 bg-navy-50 py-16 lg:py-24">
         <div class="mx-auto max-w-7xl px-4 lg:px-8">

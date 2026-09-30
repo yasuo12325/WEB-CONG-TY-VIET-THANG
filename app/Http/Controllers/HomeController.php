@@ -46,6 +46,8 @@ class HomeController extends Controller
 
         $partners = Partner::active()->get();
 
+        $featuredPartners = Partner::active()->featured()->get();
+
         $latestNews = News::query()
             ->published()
             ->orderByDesc('published_at')
@@ -57,6 +59,7 @@ class HomeController extends Controller
             'categories' => $categories,
             'featuredProducts' => $featuredProducts,
             'partners' => $partners,
+            'featuredPartners' => $featuredPartners,
             'latestNews' => $latestNews,
             'hero' => [
                 'headline' => Setting::getTrans('hero_headline'),

@@ -25,6 +25,10 @@ return [
     'featured_badge' => 'Nổi bật',
     'view_full_catalogue' => 'Xem toàn bộ danh mục sản phẩm',
 
+    'featured_partners_kicker' => 'Quan hệ hợp tác chiến lược',
+    'featured_partners_title' => 'Đối tác tiêu biểu',
+    'featured_partners_badge' => 'Đại diện độc quyền',
+
     'partners_kicker' => 'Đồng hành cùng các hãng công nghệ hàng đầu',
     'partners_title' => 'Đối tác & Nhà sản xuất',
 

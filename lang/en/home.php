@@ -25,6 +25,10 @@ return [
     'featured_badge' => 'Featured',
     'view_full_catalogue' => 'View the full product catalogue',
 
+    'featured_partners_kicker' => 'Strategic partnerships',
+    'featured_partners_title' => 'Featured Partners',
+    'featured_partners_badge' => 'Exclusive Representative',
+
     'partners_kicker' => 'Working alongside leading technology brands',
     'partners_title' => 'Partners & Manufacturers',
 

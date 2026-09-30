@@ -43,6 +43,10 @@ class PartnerForm
                 Toggle::make('is_active')
                     ->label('Hiển thị')
                     ->default(true),
+                Toggle::make('is_featured')
+                    ->label('Đối tác tiêu biểu')
+                    ->helperText('Hiện ở khối "Đối tác tiêu biểu" trên trang chủ với nhãn "Đại diện độc quyền", ngay trên danh sách đối tác đầy đủ.')
+                    ->columnSpanFull(),
             ])
             ->columns(2);
     }

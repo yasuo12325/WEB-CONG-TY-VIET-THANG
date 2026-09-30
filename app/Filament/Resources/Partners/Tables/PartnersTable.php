@@ -8,6 +8,8 @@ use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 
 class PartnersTable
@@ -37,9 +39,16 @@ class PartnersTable
                 IconColumn::make('is_active')
                     ->label('Hiển thị')
                     ->boolean(),
+                ToggleColumn::make('is_featured')
+                    ->label('Tiêu biểu')
+                    ->tooltip('Bật để hiện ở khối "Đối tác tiêu biểu" trên trang chủ với nhãn "Đại diện độc quyền".'),
             ])
             ->filters([
-                //
+                TernaryFilter::make('is_featured')
+                    ->label('Tiêu biểu')
+                    ->placeholder('Tất cả đối tác')
+                    ->trueLabel('Chỉ đối tác tiêu biểu')
+                    ->falseLabel('Chỉ đối tác thường'),
             ])
             ->recordActions([
                 EditAction::make(),
