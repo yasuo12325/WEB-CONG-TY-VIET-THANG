@@ -8,6 +8,7 @@ return [
     'projects' => 'Projects',
     'partners' => 'Partners',
     'news' => 'News',
+    'jobs' => 'Careers',
     'contact' => 'Contact',
     'view_all_products' => 'View all products',
     'menu_open' => 'Open menu',

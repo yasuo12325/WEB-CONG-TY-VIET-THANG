@@ -8,6 +8,7 @@ return [
     'projects' => 'Dự án',
     'partners' => 'Đối tác',
     'news' => 'Tin tức',
+    'jobs' => 'Tuyển dụng',
     'contact' => 'Liên hệ',
     'view_all_products' => 'Xem tất cả sản phẩm',
     'menu_open' => 'Mở menu',

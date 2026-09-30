@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\JobPostingController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductController;
@@ -33,6 +34,9 @@ Route::get('/du-an/{project}', [ProjectController::class, 'show'])->name('projec
 Route::get('/tin-tuc', [NewsController::class, 'index'])->name('news.index');
 Route::get('/tin-tuc/{news}', [NewsController::class, 'show'])->name('news.show');
 
+Route::get('/tuyen-dung', [JobPostingController::class, 'index'])->name('jobs.index');
+Route::get('/tuyen-dung/{jobPosting}', [JobPostingController::class, 'show'])->name('jobs.show');
+
 Route::get('/lien-he', [ContactController::class, 'show'])->name('contact.show');
 Route::post('/lien-he', [ContactController::class, 'store'])->name('contact.store');
 
@@ -59,6 +63,9 @@ Route::prefix('en')->name('en.')->group(function () {
 
     Route::get('/news', [NewsController::class, 'index'])->name('news.index');
     Route::get('/news/{news}', [NewsController::class, 'show'])->name('news.show');
+
+    Route::get('/careers', [JobPostingController::class, 'index'])->name('jobs.index');
+    Route::get('/careers/{jobPosting}', [JobPostingController::class, 'show'])->name('jobs.show');
 
     Route::get('/contact', [ContactController::class, 'show'])->name('contact.show');
     Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');

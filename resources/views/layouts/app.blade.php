@@ -99,6 +99,7 @@
                 <a href="{{ lr('technology') }}" class="rounded-sm px-3 py-2 transition hover:text-gold-400 {{ lr_is('technology') ? 'text-gold-400' : '' }}">{{ __('nav.technology') }}</a>
                 <a href="{{ lr('partners') }}" class="rounded-sm px-3 py-2 transition hover:text-gold-400 {{ lr_is('partners') ? 'text-gold-400' : '' }}">{{ __('nav.partners') }}</a>
                 <a href="{{ lr('news.index') }}" class="rounded-sm px-3 py-2 transition hover:text-gold-400 {{ lr_is('news.*') ? 'text-gold-400' : '' }}">{{ __('nav.news') }}</a>
+                <a href="{{ lr('jobs.index') }}" class="rounded-sm px-3 py-2 transition hover:text-gold-400 {{ lr_is('jobs.*') ? 'text-gold-400' : '' }}">{{ __('nav.jobs') }}</a>
             </nav>
 
             <div class="hidden items-center gap-3 lg:flex">
@@ -147,6 +148,7 @@
                 <a href="{{ lr('technology') }}" class="rounded-sm px-2 py-2.5 hover:bg-white/5 hover:text-gold-400">{{ __('nav.technology') }}</a>
                 <a href="{{ lr('partners') }}" class="rounded-sm px-2 py-2.5 hover:bg-white/5 hover:text-gold-400">{{ __('nav.partners') }}</a>
                 <a href="{{ lr('news.index') }}" class="rounded-sm px-2 py-2.5 hover:bg-white/5 hover:text-gold-400">{{ __('nav.news') }}</a>
+                <a href="{{ lr('jobs.index') }}" class="rounded-sm px-2 py-2.5 hover:bg-white/5 hover:text-gold-400">{{ __('nav.jobs') }}</a>
                 <a href="{{ lr('contact.show') }}" class="mt-2 rounded-sm bg-gold-500 px-2 py-3 text-center font-bold text-navy-950">{{ __('nav.contact') }}</a>
             </nav>
         </div>
@@ -189,6 +191,7 @@
                     <li><a href="{{ lr('technology') }}" class="transition hover:text-gold-400">{{ __('nav.technology') }}</a></li>
                     <li><a href="{{ lr('partners') }}" class="transition hover:text-gold-400">{{ __('nav.partners') }}</a></li>
                     <li><a href="{{ lr('news.index') }}" class="transition hover:text-gold-400">{{ __('nav.news') }}</a></li>
+                    <li><a href="{{ lr('jobs.index') }}" class="transition hover:text-gold-400">{{ __('nav.jobs') }}</a></li>
                     <li><a href="{{ lr('contact.show') }}" class="transition hover:text-gold-400">{{ __('nav.contact') }}</a></li>
                 </ul>
             </div>
