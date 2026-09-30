@@ -57,7 +57,7 @@ MAIL_PORT=587
 MAIL_USERNAME=<email SMTP>
 MAIL_PASSWORD=<mật khẩu email>
 MAIL_FROM_ADDRESS="info@vietthang.vn"
-MAIL_ADMIN_NOTIFY_ADDRESS="info@vietthang.vn"
+MAIL_ADMIN_NOTIFY_ADDRESS="info@vietthang.vn,other@vietthang.vn"  # cách nhau bằng dấu phẩy để gửi cho nhiều người
 
 ADMIN_EMAIL=admin@vietthang.vn
 ADMIN_PASSWORD=<đặt một mật khẩu mạnh — chỉ dùng cho lần seed đầu tiên>

@@ -115,6 +115,11 @@ return [
         'name' => env('MAIL_FROM_NAME', env('APP_NAME', 'Laravel')),
     ],
 
-    'admin_notify_address' => env('MAIL_ADMIN_NOTIFY_ADDRESS'),
+    // Comma-separated in .env (e.g. "a@x.com,b@x.com") so every new
+    // contact-form submission notifies the whole list, not just one inbox.
+    'admin_notify_address' => array_filter(array_map(
+        'trim',
+        explode(',', (string) env('MAIL_ADMIN_NOTIFY_ADDRESS', ''))
+    )),
 
 ];
