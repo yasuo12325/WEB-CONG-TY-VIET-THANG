@@ -16,10 +16,12 @@
                         <x-heroicon-o-map-pin class="h-5 w-5 flex-none text-gold-600" />
                         <span>{{ $siteSettings['headquarters_address'] ?? '' }}</span>
                     </li>
-                    <li class="flex items-start gap-3">
-                        <x-heroicon-o-building-office-2 class="h-5 w-5 flex-none text-gold-600" />
-                        <span>{{ $siteSettings['office_address'] ?? '' }}</span>
-                    </li>
+                    @if(!empty($siteSettings['office_address']))
+                        <li class="flex items-start gap-3">
+                            <x-heroicon-o-building-office-2 class="h-5 w-5 flex-none text-gold-600" />
+                            <span>{{ $siteSettings['office_address'] }}</span>
+                        </li>
+                    @endif
                     <li class="flex items-start gap-3">
                         <x-heroicon-o-phone class="h-5 w-5 flex-none text-gold-600" />
                         <span>{{ $siteSettings['phone'] ?? '' }}</span>

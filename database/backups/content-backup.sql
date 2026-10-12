@@ -593,8 +593,8 @@ INSERT INTO `settings` VALUES
 (6,'employee_count','100+','string','2026-08-20 19:57:05','2026-08-28 21:41:52'),
 (7,'partner_count','300+','string','2026-08-20 19:57:05','2026-08-28 21:41:52'),
 (8,'ceo_name','Phí Bá Linh','string','2026-08-20 19:57:05','2026-08-20 19:57:05'),
-(9,'headquarters_address','Số 19, ngõ 159 Pháo Đài Láng, phường Láng, Hà Nội','string','2026-08-20 19:57:05','2026-08-20 19:57:05'),
-(10,'office_address','Tầng 8, tòa nhà Diamond Flower (Handico 6), đường Lê Văn Lương, phường Thanh Xuân, Hà Nội','string','2026-08-20 19:57:05','2026-08-20 19:57:05'),
+(9,'headquarters_address','VPGD: Tầng 8, tòa nhà Diamond Flower, 48 Lê Văn Lương, phường Yên Hòa, Hà Nội','string','2026-08-20 19:57:05','2026-10-12 04:14:07'),
+(10,'office_address','','string','2026-08-20 19:57:05','2026-10-12 04:14:07'),
 (11,'phone','024.66665511 / 024.66665522','string','2026-08-20 19:57:05','2026-08-20 19:57:05'),
 (12,'fax','024.66665577','string','2026-08-20 19:57:05','2026-08-20 19:57:05'),
 (13,'email','info@vietthang.vn','string','2026-08-20 19:57:05','2026-08-20 19:57:05'),
@@ -625,4 +625,4 @@ SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
--- Dump completed on 2026-10-02  3:53:15
+-- Dump completed on 2026-10-12  4:14:30

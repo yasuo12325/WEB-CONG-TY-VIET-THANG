@@ -100,8 +100,8 @@ class ManageSettings extends Page implements HasForms
                 Section::make('Thông tin liên hệ')
                     ->columns(2)
                     ->schema([
-                        Textarea::make('headquarters_address')->label('Trụ sở chính')->columnSpanFull(),
-                        Textarea::make('office_address')->label('Văn phòng giao dịch')->columnSpanFull(),
+                        Textarea::make('headquarters_address')->label('Địa chỉ VPGD (hiển thị ở footer và trang Liên hệ)')->columnSpanFull(),
+                        Textarea::make('office_address')->label('Địa chỉ phụ (không bắt buộc — để trống sẽ tự ẩn)')->columnSpanFull(),
                         TextInput::make('phone')->label('Điện thoại'),
                         TextInput::make('fax')->label('Fax'),
                         TextInput::make('email')->label('Email')->email(),
